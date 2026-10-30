@@ -10,7 +10,23 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
+/* ==========================================================================
+   0. LIGHT THEME CONTROLLER (PERMANENT DAY MODE)
+   ========================================================================== */
+function initTheme() {
+  localStorage.removeItem('probuild-theme');
+  document.body.classList.remove('dark-theme');
+  document.body.classList.add('light-theme');
+}
+
+window.toggleTheme = function() {
+  // Night mode permanently disabled
+  document.body.classList.remove('dark-theme');
+  document.body.classList.add('light-theme');
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   initAmbientCanvas();
   initNavbar();
   initOdometerCounters();
@@ -20,10 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initPortfolioFilters();
   initPricingToggle();
   initFaqAccordion();
+  initBeforeAfterSlider();
+  initCostCalculator();
+  initSocialProofToast();
 });
 
 /* ==========================================================================
-   1. AMBIENT BACKGROUND CANVAS ANIMATION
+   1. AMBIENT BACKGROUND CANVAS ANIMATION (HIGH INTENSITY WHITE DOTS)
    ========================================================================== */
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
@@ -54,8 +73,7 @@ function initAmbientCanvas() {
 
   function render() {
     ctx.clearRect(0, 0, width, height);
-
-    // Update and draw particles
+    // Update and draw particles in elegant subtle ambient style
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
       p.x += p.vx;
@@ -68,7 +86,7 @@ function initAmbientCanvas() {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(37, 99, 235, ${p.opacity * 0.5})`;
+      ctx.fillStyle = `rgba(37, 55, 69, ${p.opacity * 0.35})`;
       ctx.fill();
 
       // Connect nearby particles with subtle lines
@@ -78,10 +96,10 @@ function initAmbientCanvas() {
         const dy = p.y - p2.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < 130) {
+        if (dist < 120) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(37, 99, 235, ${0.08 * (1 - dist / 130)})`;
-          ctx.lineWidth = 0.8;
+          ctx.strokeStyle = `rgba(37, 55, 69, ${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.75;
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
           ctx.stroke();
@@ -94,7 +112,7 @@ function initAmbientCanvas() {
 }
 
 /* ==========================================================================
-   2. NAVBAR & MOBILE DRAWER LOGIC
+   2. NAVBAR & MOBILE DRAWER LOGIC (Squarespace Sticky Header & Scrollspy)
    ========================================================================== */
 function initNavbar() {
   const header = document.getElementById('main-header');
@@ -103,35 +121,64 @@ function initNavbar() {
   const closeBtn = document.getElementById('drawer-close');
   const overlay = document.getElementById('drawer-overlay');
   const drawerLinks = document.querySelectorAll('.drawer-link');
+  const navItems = document.querySelectorAll('.nav-menu .nav-item');
+  const sections = document.querySelectorAll('section[id]');
 
-  // Sticky navbar: keep transparent on hero, only add scrolled style after hero is passed
+  // Sticky navbar: stays transparent until hero section is fully scrolled past
   const heroSection = document.getElementById('hero');
-  function handleNavbarScroll() {
-    if (!header) return;
-    const heroHeight = heroSection ? heroSection.offsetHeight : 600;
-    // Delay transition until hero section is completely scrolled past
-    const scrollThreshold = Math.max(heroHeight - 90, 200);
-    if (window.scrollY > scrollThreshold) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+  function handleScroll() {
+    if (header) {
+      // Use hero section height as scroll threshold - navbar turns white only AFTER hero is gone
+      const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+      const scrollThreshold = heroHeight - 72; // subtract navbar height
+      if (window.scrollY > scrollThreshold) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+
+    // Scrollspy for active nav item
+    let currentSectionId = '';
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(sec => {
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentSectionId = sec.getAttribute('id');
+      }
+    });
+
+    if (currentSectionId) {
+      navItems.forEach(item => {
+        const href = item.getAttribute('href');
+        if (href === `#${currentSectionId}`) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
     }
   }
 
-  window.addEventListener('scroll', handleNavbarScroll, { passive: true });
-  handleNavbarScroll();
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
 
   // Mobile Drawer Toggle
   function openDrawer() {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    if (drawer && overlay) {
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
   }
 
   function closeDrawer() {
-    drawer.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
+    if (drawer && overlay) {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
   }
 
   if (toggleBtn) toggleBtn.addEventListener('click', openDrawer);
@@ -346,54 +393,71 @@ function formatINR(number) {
 /* ==========================================================================
    7. PRICING TOGGLE (MONTHLY RETAINER VS ONE-TIME BUILD)
    ========================================================================== */
+window.switchPricingTab = function(mode) {
+  const metaGrid = document.getElementById('meta-packages-grid');
+  const mainGrid = document.getElementById('main-packages-grid');
+  const standardGrid = document.getElementById('standard-packages-grid');
+  const activeMainGrid = mainGrid || standardGrid;
+  const metaBanner = document.getElementById('meta-section-banner');
+  const mainBanner = document.getElementById('main-section-banner');
+  const btnMain = document.getElementById('tab-btn-main');
+  const btnMeta = document.getElementById('tab-btn-meta');
+  const btnMonthly = document.getElementById('tab-btn-monthly');
+  const btnOnetime = document.getElementById('tab-btn-onetime');
+
+  // Reset tab buttons
+  [btnMain, btnMeta, btnMonthly, btnOnetime].forEach(btn => {
+    if (btn) btn.classList.remove('active');
+  });
+
+  if (mode === 'meta') {
+    if (btnMeta) btnMeta.classList.add('active');
+    if (metaGrid) metaGrid.style.display = 'grid';
+    if (metaBanner) metaBanner.style.display = 'block';
+    if (activeMainGrid) activeMainGrid.style.display = 'none';
+    if (mainBanner) mainBanner.style.display = 'none';
+  } else {
+    // Default to All-in-One Main Business Plans
+    if (btnMain) btnMain.classList.add('active');
+    else if (btnMonthly) btnMonthly.classList.add('active');
+    if (metaGrid) metaGrid.style.display = 'none';
+    if (metaBanner) metaBanner.style.display = 'none';
+    if (activeMainGrid) activeMainGrid.style.display = 'grid';
+    if (mainBanner) mainBanner.style.display = 'block';
+  }
+};
+
 function initPricingToggle() {
   const toggle = document.getElementById('pricing-toggle');
   const labelMonthly = document.getElementById('label-monthly');
   const labelOneTime = document.getElementById('label-onetime');
-  const priceElements = document.querySelectorAll('.price-amount');
-  const periodElements = document.querySelectorAll('.price-period');
+  const priceElements = document.querySelectorAll('#standard-packages-grid .price-amount');
+  const periodElements = document.querySelectorAll('#standard-packages-grid .price-period');
 
-  if (!toggle) return;
+  if (toggle) {
+    function handleToggle() {
+      const isOneTime = toggle.checked;
+      if (isOneTime) {
+        window.switchPricingTab('onetime');
+      } else {
+        window.switchPricingTab('monthly');
+      }
+    }
 
-  function handleToggle() {
-    const isOneTime = toggle.checked;
-
-    if (isOneTime) {
-      labelMonthly.classList.remove('active');
-      labelOneTime.classList.add('active');
-
-      priceElements.forEach(el => {
-        const onetimePrice = el.getAttribute('data-onetime');
-        el.textContent = onetimePrice;
+    toggle.addEventListener('change', handleToggle);
+    if (labelMonthly) {
+      labelMonthly.addEventListener('click', () => {
+        toggle.checked = false;
+        handleToggle();
       });
-
-      periodElements.forEach(el => {
-        el.textContent = 'one-time build';
-      });
-    } else {
-      labelOneTime.classList.remove('active');
-      labelMonthly.classList.add('active');
-
-      priceElements.forEach(el => {
-        const monthlyPrice = el.getAttribute('data-monthly');
-        el.textContent = monthlyPrice;
-      });
-
-      periodElements.forEach(el => {
-        el.textContent = '/month';
+    }
+    if (labelOneTime) {
+      labelOneTime.addEventListener('click', () => {
+        toggle.checked = true;
+        handleToggle();
       });
     }
   }
-
-  toggle.addEventListener('change', handleToggle);
-  labelMonthly.addEventListener('click', () => {
-    toggle.checked = false;
-    handleToggle();
-  });
-  labelOneTime.addEventListener('click', () => {
-    toggle.checked = true;
-    handleToggle();
-  });
 }
 
 /* ==========================================================================
@@ -494,7 +558,7 @@ window.openCaseModal = function(caseId) {
   content.innerHTML = `
     <div class="modal-case-header">
       <span class="category-pill" style="position: static; display: inline-block; margin-bottom: 0.8rem;">${data.category}</span>
-      <h2 style="font-size: 1.8rem; margin-bottom: 0.4rem;">${data.title}</h2>
+      <h2 class="modal-case-title" style="font-size: 1.8rem; margin-bottom: 0.4rem;">${data.title}</h2>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;"><strong>Client:</strong> ${data.client}</p>
     </div>
     
@@ -502,7 +566,7 @@ window.openCaseModal = function(caseId) {
       <img src="${data.image}" alt="${data.title}" style="width: 100%; height: 260px; object-fit: cover;">
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-bottom: 1.8rem; background: rgba(10, 15, 24, 0.7); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--line); text-align: center;">
+    <div class="case-modal-metrics-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-bottom: 1.8rem; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--line); text-align: center;">
       ${data.metrics.map(m => `
         <div>
           <div style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; color: var(--accent-cyan);">${m.value}</div>
@@ -512,12 +576,12 @@ window.openCaseModal = function(caseId) {
     </div>
 
     <div style="margin-bottom: 1.4rem;">
-      <h4 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 0.5rem;"><i class="fa-solid fa-triangle-exclamation" style="color: #f59e0b; margin-right: 0.4rem;"></i> The Challenge</h4>
+      <h4 class="modal-section-title" style="font-size: 1.1rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-triangle-exclamation" style="color: #f59e0b; margin-right: 0.4rem;"></i> The Challenge</h4>
       <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.65;">${data.overview}</p>
     </div>
 
     <div style="margin-bottom: 1.6rem;">
-      <h4 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 0.5rem;"><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-cyan); margin-right: 0.4rem;"></i> The ProBuild Solution</h4>
+      <h4 class="modal-section-title" style="font-size: 1.1rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-cyan); margin-right: 0.4rem;"></i> The ProBuild Solution</h4>
       <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.65;">${data.solution}</p>
     </div>
 
@@ -525,7 +589,7 @@ window.openCaseModal = function(caseId) {
       <h4 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.6rem;">Technologies Applied:</h4>
       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
         ${data.techStack.map(t => `
-          <span style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line-strong); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.76rem; font-family: var(--font-mono); color: var(--accent-cyan);">${t}</span>
+          <span style="background: rgba(37, 99, 235, 0.08); border: 1px solid var(--line-strong); padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.76rem; font-family: var(--font-mono); color: var(--accent-cyan);">${t}</span>
         `).join('')}
       </div>
     </div>
@@ -548,11 +612,57 @@ window.closeCaseModal = function() {
   document.body.style.overflow = '';
 };
 
-// Close modal on outside click
+/* ==========================================================================
+   9b. META ADS PACKAGES MODAL CONTROLLER
+   ========================================================================== */
+window.openMetaAdsModal = function() {
+  const modal = document.getElementById('meta-ads-modal');
+  if (modal) {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeMetaAdsModal = function() {
+  const modal = document.getElementById('meta-ads-modal');
+  if (modal) {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+};
+
+window.selectMetaPackage = function(packageName) {
+  window.closeMetaAdsModal();
+  window.preselectService(packageName);
+  if (typeof showToast === 'function') {
+    showToast(`Selected ${packageName}! Fill in your details below.`);
+  }
+};
+
+window.scrollToSection = function(sectionId) {
+  const sec = document.getElementById(sectionId);
+  if (sec) {
+    sec.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+// Close modals on outside backdrop click
 document.addEventListener('click', (e) => {
-  const modal = document.getElementById('case-study-modal');
-  if (e.target === modal) {
+  const caseModal = document.getElementById('case-study-modal');
+  if (caseModal && e.target === caseModal) {
     window.closeCaseModal();
+  }
+  const metaModal = document.getElementById('meta-ads-modal');
+  if (metaModal && e.target === metaModal) {
+    window.closeMetaAdsModal();
+  }
+});
+
+// Close modals on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    window.closeCaseModal();
+    window.closeMetaAdsModal();
   }
 });
 
@@ -895,4 +1005,461 @@ function initVideoShowreel() {
   startPlayback();
 }
 
+/* ==========================================================================
+   11. BEFORE VS AFTER INTERACTIVE REDESIGN SLIDER (SQUARESPACE STYLE)
+   ========================================================================== */
+function initBeforeAfterSlider() {
+  const container = document.getElementById('ba-interactive-container');
+  const sliderInput = document.getElementById('ba-slider-input');
+  const beforeWrapper = document.getElementById('ba-before-wrapper');
+  const handle = document.getElementById('ba-divider-handle');
 
+  if (!container || !sliderInput || !beforeWrapper || !handle) return;
+
+  function updateSlider(val) {
+    const clamped = Math.max(0, Math.min(100, val));
+    beforeWrapper.style.width = `${clamped}%`;
+    handle.style.left = `${clamped}%`;
+  }
+
+  // Range input event (smooth across touch & mouse)
+  sliderInput.addEventListener('input', (e) => {
+    updateSlider(e.target.value);
+  });
+
+  // Mouse / Touch movement tracking for direct click-and-drag
+  let isDragging = false;
+
+  function handleDrag(clientX) {
+    const rect = container.getBoundingClientRect();
+    const offsetX = clientX - rect.left;
+    const pct = (offsetX / rect.width) * 100;
+    sliderInput.value = pct;
+    updateSlider(pct);
+  }
+
+  container.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    handleDrag(e.clientX);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    handleDrag(e.clientX);
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  // Touch support
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches.length) handleDrag(e.touches[0].clientX);
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    if (e.touches.length) handleDrag(e.touches[0].clientX);
+  }, { passive: true });
+
+  // Initial set at 50%
+  updateSlider(50);
+}
+
+/* ==========================================================================
+   12. INTERACTIVE PROJECT COST & ROI CALCULATOR
+   ========================================================================== */
+function initCostCalculator() {
+  const servicePills = document.querySelectorAll('.calc-pill');
+  const slider = document.getElementById('calc-tier-slider');
+  const addonSeo = document.getElementById('addon-seo');
+  const addonWa = document.getElementById('addon-wa');
+  const ticks = document.querySelectorAll('.calc-ticks .tick-step');
+
+  const priceDisplay = document.getElementById('calc-price-display');
+  const periodDisplay = document.getElementById('calc-period-display');
+  const planSummary = document.getElementById('calc-plan-summary');
+  const tierActivePill = document.getElementById('calc-tier-active-pill');
+  const timelineDisplay = document.getElementById('calc-timeline-display');
+  const roiDisplay = document.getElementById('calc-roi-display');
+  const deliverablesList = document.getElementById('calc-deliverables-list');
+  const waBtn = document.getElementById('calc-wa-cta-btn');
+
+  if (!priceDisplay || !slider) return;
+
+  // Pricing matrix
+  const calcData = {
+    web: {
+      name: 'Custom Web & App Development',
+      period: '/one-time',
+      tiers: [
+        {
+          label: 'STARTER TIER',
+          name: 'High-Speed Landing Page',
+          basePrice: 7499,
+          timeline: '3 - 5 Days',
+          roi: '+220% Leads',
+          deliverables: [
+            'Mobile-first responsive build (0.8s load time)',
+            'Conversion lead forms with WhatsApp alert',
+            'Razorpay, UPI & Payment gateway integration',
+            'Basic Search Engine Optimization setup'
+          ]
+        },
+        {
+          label: 'GROWTH TIER (POPULAR)',
+          name: 'Full Business Store / Web App',
+          basePrice: 14999,
+          timeline: '7 - 10 Days',
+          roi: '+340% Conversions',
+          deliverables: [
+            'Up to 10 Custom pages & full product catalog',
+            'Mobile-first checkout & WhatsApp direct order',
+            'Admin dashboard for real-time inventory management',
+            'Advanced conversion tracking & analytics sync'
+          ]
+        },
+        {
+          label: 'DOMINANCE TIER',
+          name: 'Custom Platform & SaaS App',
+          basePrice: 24999,
+          timeline: '14 - 18 Days',
+          roi: '+580% Sales Growth',
+          deliverables: [
+            'Headless React/Next.js architecture with instant CDN',
+            'Multi-tier customer login & secure order portals',
+            'Automated email, SMS & WhatsApp workflow engine',
+            '60 Days Dedicated post-launch warranty & maintenance'
+          ]
+        }
+      ]
+    },
+    ads: {
+      name: 'Meta & Google Ads Engine',
+      period: '/month',
+      tiers: [
+        {
+          label: 'STARTER TIER',
+          name: 'Meta Ads Starter',
+          basePrice: 7999,
+          timeline: '3 Days Setup',
+          roi: '+3.2x ROAS',
+          deliverables: [
+            '1 High-intent Facebook & Instagram campaign',
+            '2 Custom high-CTR ad creatives & copy',
+            'Audience interest & demographic geo-targeting',
+            'Weekly bid optimization & monthly transparent report'
+          ]
+        },
+        {
+          label: 'GROWTH TIER (POPULAR)',
+          name: 'Meta Ads Growth Engine',
+          basePrice: 14999,
+          timeline: '2 Days Setup',
+          roi: '+4.8x ROAS',
+          deliverables: [
+            'Up to 3 Campaigns (Awareness, Lead Gen & Retargeting)',
+            '5 Custom video/carousel ad creatives designed to convert',
+            'Dynamic product retargeting & lookalike audience funnels',
+            'A/B split testing & weekly metric progress calls'
+          ]
+        },
+        {
+          label: 'DOMINANCE TIER',
+          name: 'Meta Ads Dominance Scale',
+          basePrice: 24999,
+          timeline: '24h Priority Setup',
+          roi: '+6.5x ROAS',
+          deliverables: [
+            'Up to 5 Omni-funnel campaigns for aggressive scaling',
+            '8 High-retention video reels & graphic creatives',
+            'Server-side Meta Conversion API (CAPI) pixel setup',
+            'Priority 24/7 Slack/WhatsApp dedicated strategist channel'
+          ]
+        }
+      ]
+    },
+    nfc: {
+      name: 'Smart NFC Business Solutions',
+      period: '/one-time',
+      tiers: [
+        {
+          label: 'STARTER TIER',
+          name: 'Smart NFC Executive Card',
+          basePrice: 1499,
+          timeline: '2 - 3 Days Dispatch',
+          roi: '100% Contact Retention',
+          deliverables: [
+            '1 Premium matte black smart NFC contact card',
+            'Instant 1-tap contact save to iPhone & Android',
+            'Social links, WhatsApp, phone & catalog routing',
+            'Zero app installation required & lifetime QR fallback'
+          ]
+        },
+        {
+          label: 'GROWTH TIER (POPULAR)',
+          name: 'Google Review NFC Standee Pack (3 Standees)',
+          basePrice: 3999,
+          timeline: '3 - 4 Days Dispatch',
+          roi: '5x Google Reviews',
+          deliverables: [
+            '3 Commercial acrylic NFC tap standees for physical counters',
+            'Direct 1-tap 5-star Google review redirect',
+            'Dynamic link update dashboard with real-time analytics',
+            'Weatherproof UV-coated finish with counter branding'
+          ]
+        },
+        {
+          label: 'DOMINANCE TIER',
+          name: 'Corporate Fleet (10 Custom Smart Cards)',
+          basePrice: 9999,
+          timeline: '5 - 7 Days Dispatch',
+          roi: 'Team Enterprise Fleet',
+          deliverables: [
+            '10 Laser-engraved customized metal or matte NFC cards',
+            'Centralized team management dashboard with role controls',
+            'Real-time tap analytics and lead capture logging',
+            'Custom branded landing URL on your company domain'
+          ]
+        }
+      ]
+    },
+    college: {
+      name: 'College Projects & Academic Kits',
+      period: '/one-time',
+      tiers: [
+        {
+          label: 'STARTER TIER',
+          name: 'Mini Project Complete Kit',
+          basePrice: 3499,
+          timeline: '2 Days Delivery',
+          roi: 'A+ Grade Guarantee',
+          deliverables: [
+            '100% Working frontend + backend source code',
+            'Complete local setup & step-by-step execution guide',
+            'Database schema, ER diagrams & system architecture',
+            'Basic viva defence questions & cheat sheet'
+          ]
+        },
+        {
+          label: 'GROWTH TIER (POPULAR)',
+          name: 'Major IEEE Project + Paper Ready',
+          basePrice: 6999,
+          timeline: '4 Days Delivery',
+          roi: 'University A+ Approved',
+          deliverables: [
+            'Full IEEE/CS Major project with custom modifications',
+            'Complete 80+ page project report (Word + PDF formatted)',
+            'Professional PPT presentation with data flow diagrams',
+            '1-on-1 Live Google Meet code walkthrough demo'
+          ]
+        },
+        {
+          label: 'DOMINANCE TIER',
+          name: 'AI/ML Deep Tech Capstone Project',
+          basePrice: 11999,
+          timeline: '5 Days Delivery',
+          roi: 'Research Defence Ready',
+          deliverables: [
+            'Cutting-edge AI / Deep Learning model training & API',
+            'IEEE research paper format ready for journal publication',
+            'Live viva mock rehearsal coaching with our senior engineers',
+            'Unlimited code revisions until university viva approval'
+          ]
+        }
+      ]
+    }
+  };
+
+  let activeService = 'web';
+  let activeTierIndex = 1; // 0: Starter, 1: Growth, 2: Dominance
+
+  function updateCalculator() {
+    const serviceInfo = calcData[activeService] || calcData.web;
+    const tierInfo = serviceInfo.tiers[activeTierIndex] || serviceInfo.tiers[1];
+
+    let total = tierInfo.basePrice;
+    const addOnList = [];
+
+    if (addonSeo && addonSeo.checked) {
+      total += 2499;
+      addOnList.push('Speed & SEO Optimization (+₹2,499)');
+    }
+    if (addonWa && addonWa.checked) {
+      total += 1999;
+      addOnList.push('WhatsApp CRM Auto-Bot (+₹1,999)');
+    }
+
+    // Update UI elements
+    priceDisplay.textContent = total.toLocaleString('en-IN');
+    periodDisplay.textContent = serviceInfo.period;
+    planSummary.innerHTML = `<strong>${serviceInfo.name}</strong> &bull; ${tierInfo.name}`;
+    tierActivePill.textContent = tierInfo.label;
+    timelineDisplay.textContent = tierInfo.timeline;
+    roiDisplay.textContent = tierInfo.roi;
+
+    // Update ticks
+    ticks.forEach((tick, i) => {
+      tick.classList.toggle('active', i === activeTierIndex);
+    });
+
+    // Update deliverables list
+    deliverablesList.innerHTML = '';
+    tierInfo.deliverables.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${item}</span>`;
+      deliverablesList.appendChild(li);
+    });
+
+    addOnList.forEach(addOn => {
+      const li = document.createElement('li');
+      li.innerHTML = `<i class="fa-solid fa-plus text-emerald"></i> <span class="text-emerald"><strong>Add-on:</strong> ${addOn}</span>`;
+      deliverablesList.appendChild(li);
+    });
+
+    // Update WhatsApp CTA URL
+    const msg = encodeURIComponent(
+      `Hi ProBuild, I used your Interactive Calculator!\n` +
+      `📌 Service: ${serviceInfo.name}\n` +
+      `📦 Package: ${tierInfo.name} (${tierInfo.label})\n` +
+      `💰 Estimated Total: ₹${total.toLocaleString('en-IN')}${serviceInfo.period}\n` +
+      `⚡ Timeline: ${tierInfo.timeline}\n` +
+      `Can we get started?`
+    );
+    if (waBtn) {
+      waBtn.href = `https://wa.me/919021321877?text=${msg}`;
+    }
+  }
+
+  // Service pill click
+  servicePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      servicePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeService = pill.dataset.service;
+      updateCalculator();
+    });
+  });
+
+  // Slider change
+  slider.addEventListener('input', (e) => {
+    activeTierIndex = parseInt(e.target.value) - 1;
+    updateCalculator();
+  });
+
+  // Addons change
+  if (addonSeo) addonSeo.addEventListener('change', updateCalculator);
+  if (addonWa) addonWa.addEventListener('change', updateCalculator);
+
+  // Initial calculation
+  updateCalculator();
+}
+
+/* ==========================================================================
+   13. DYNAMIC SOCIAL PROOF TRUST NOTIFICATION TOASTS
+   ========================================================================== */
+function initSocialProofToast() {
+  const toast = document.getElementById('social-proof-toast');
+  const avatar = document.getElementById('sp-avatar');
+  const title = document.getElementById('sp-title');
+  const action = document.getElementById('sp-action');
+  const time = document.getElementById('sp-time');
+  const closeBtn = document.getElementById('sp-close-btn');
+
+  if (!toast || !title || !action) return;
+
+  const proofEvents = [
+    {
+      title: 'New Client Onboarded',
+      action: 'Dr. Rohan from Mumbai launched their Clinic Platform',
+      time: '3 mins ago',
+      icon: 'fa-solid fa-laptop-code'
+    },
+    {
+      title: 'Meta Ads ROAS Jump',
+      action: 'Urban Luxe achieved 4.9x ROAS with ₹42L revenue',
+      time: '9 mins ago',
+      icon: 'fa-brands fa-meta'
+    },
+    {
+      title: 'NFC Dispatch',
+      action: '15 Smart NFC Executive Cards shipped to Bangalore',
+      time: '18 mins ago',
+      icon: 'fa-solid fa-wifi'
+    },
+    {
+      title: 'Project Delivered',
+      action: 'Final Year IEEE AI Project delivered to MIT Pune',
+      time: '24 mins ago',
+      icon: 'fa-solid fa-graduation-cap'
+    },
+    {
+      title: 'Audit Requested',
+      action: 'Aditya from Delhi requested a Custom Web App audit',
+      time: '38 mins ago',
+      icon: 'fa-solid fa-bolt'
+    }
+  ];
+
+  let currentIndex = 0;
+  let isDismissed = false;
+
+  function showNextProof() {
+    if (isDismissed) return;
+
+    const data = proofEvents[currentIndex];
+    title.textContent = data.title;
+    action.textContent = data.action;
+    time.textContent = data.time;
+    if (avatar) avatar.innerHTML = `<i class="${data.icon}"></i>`;
+
+    toast.classList.add('show');
+
+    // Hide after 5 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 5200);
+
+    currentIndex = (currentIndex + 1) % proofEvents.length;
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      toast.classList.remove('show');
+      isDismissed = true;
+    });
+  }
+
+  // First toast after 3 seconds, then every 18 seconds
+  setTimeout(showNextProof, 3500);
+  setInterval(showNextProof, 19000);
+}
+
+
+
+/* Squarespace Interactive Showcase Switcher (Studio MacBook <-> 3D Tech Architecture) */
+window.switchHeroView = function(viewType, btnElement) {
+  const img = document.getElementById('sq-hero-main-img');
+  const badgeText = document.getElementById('sq-badge-text');
+  const tabs = document.querySelectorAll('.sq-tab-btn');
+  if (!img) return;
+
+  tabs.forEach(t => t.classList.remove('active'));
+  if (btnElement) btnElement.classList.add('active');
+
+  img.style.opacity = '0.15';
+  img.style.transform = 'scale(0.98)';
+
+  setTimeout(() => {
+    if (viewType === 'architecture') {
+      img.src = 'assets/probuild_tech_stack_showcase.jpg';
+      img.alt = 'ProBuild High-Performance 3D Tech Stack & Architecture';
+      if (badgeText) badgeText.innerText = 'HIGH-PERFORMANCE 3D ARCHITECTURE • +128% SPEED';
+    } else {
+      img.src = 'assets/probuild_macbook_hero.png';
+      img.alt = 'ProBuild Digital Solutions Platform on MacBook Pro';
+      if (badgeText) badgeText.innerText = 'PROBUILD DIGITAL SOLUTIONS • LIVE PRODUCTION';
+    }
+    img.style.opacity = '1';
+    img.style.transform = 'scale(1)';
+  }, 180);
+};

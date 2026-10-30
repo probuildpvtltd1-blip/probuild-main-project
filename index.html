@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=3.3">
+  <link rel="stylesheet" href="styles.css?v=4.3">
 </head>
 <body class="light-theme">
   <!-- Dynamic Glow Background Canvas & Ambient Lights -->
@@ -34,35 +34,61 @@
   <!-- Main Sticky Header / Floating Island Navbar -->
   <header class="main-navbar" id="main-header">
     <div class="navbar-container">
-      <!-- Brand Logo -->
+      <!-- Brand Logo (Gold & White Wordmark Matching Hero) -->
       <a href="#hero" class="brand-logo" id="brand-logo" aria-label="ProBuild Home">
-        <div class="logo-symbol">
-          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 2L29 9.5V22.5L16 30L3 22.5V9.5L16 2Z" stroke="url(#logo-grad-1)" stroke-width="2.2" stroke-linejoin="round" fill="rgba(37, 99, 235, 0.08)"/>
-            <path d="M16 8L24 12.5V20.5L16 25L8 20.5V12.5L16 8Z" fill="url(#logo-grad-2)" opacity="0.95"/>
-            <circle cx="16" cy="16.5" r="2.8" fill="#ffffff"/>
-            <defs>
-              <linearGradient id="logo-grad-1" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#2563eb"/>
-                <stop offset="1" stop-color="#4f46e5"/>
-              </linearGradient>
-              <linearGradient id="logo-grad-2" x1="8" y1="8" x2="24" y2="25" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#4f46e5"/>
-                <stop offset="1" stop-color="#2563eb"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div class="logo-text">
-          <span class="brand-name"><span class="nav-logo-pro" style="color: #0f172a !important; font-weight: 900 !important; display: inline-block !important;">PRO</span><span class="gradient-text">BUILD</span></span>
-          <span class="brand-badge">DIGITAL</span>
-        </div>
+        <img src="assets/hero-layers/tight_probuild_logo_gold.png" alt="ProBuild Digital Solutions" class="nav-gold-logo logo-light" />
+        <img src="assets/hero-layers/tight_probuild_logo_dark.png" alt="ProBuild Digital Solutions" class="nav-gold-logo logo-dark" />
       </a>
 
-      <!-- Desktop Navigation Menu (Floating Pill Tabs) -->
+      <!-- Squarespace-Style Desktop Navigation Menu -->
       <nav class="nav-menu" id="nav-menu" aria-label="Primary Navigation">
         <ul class="nav-links">
-          <li><a href="#services" class="nav-item">Services</a></li>
+          <li class="nav-item-dropdown">
+            <a href="#services" class="nav-item nav-has-dropdown" id="nav-services-trigger">
+              <span>Services</span>
+              <i class="fa-solid fa-chevron-down nav-chevron"></i>
+            </a>
+            <!-- Squarespace-Style Rich Mega Menu Dropdown -->
+            <div class="nav-mega-menu" id="nav-mega-menu">
+              <div class="mega-menu-grid">
+                <a href="#services" class="mega-menu-item">
+                  <div class="mega-icon-wrap bg-blue"><i class="fa-solid fa-code"></i></div>
+                  <div class="mega-text">
+                    <strong>Custom Web &amp; App Development</strong>
+                    <span>Ultra-fast 99+ PageSpeed, Next.js, Stores &amp; Portals</span>
+                  </div>
+                </a>
+                <a href="#packages" class="mega-menu-item" onclick="openMetaAdsModal()">
+                  <div class="mega-icon-wrap bg-cyan"><i class="fa-brands fa-meta"></i></div>
+                  <div class="mega-text">
+                    <strong>Meta &amp; Google Ads Engine</strong>
+                    <span>High-ROAS Funnels from ₹7,999/mo <span class="badge-mini">Popular</span></span>
+                  </div>
+                </a>
+                <a href="#services" class="mega-menu-item">
+                  <div class="mega-icon-wrap bg-indigo"><i class="fa-solid fa-wifi"></i></div>
+                  <div class="mega-text">
+                    <strong>Smart NFC Business Cards</strong>
+                    <span>1-Tap digital contact sharing &amp; Google review cards</span>
+                  </div>
+                </a>
+                <a href="#services" class="mega-menu-item">
+                  <div class="mega-icon-wrap bg-purple"><i class="fa-solid fa-graduation-cap"></i></div>
+                  <div class="mega-text">
+                    <strong>College Projects &amp; IEEE Kits</strong>
+                    <span>Full source code, documentation &amp; live viva defence support</span>
+                  </div>
+                </a>
+              </div>
+              <div class="mega-menu-footer">
+                <span class="mega-footer-text"><i class="fa-solid fa-wand-magic-sparkles"></i> Need a customized digital strategy?</span>
+                <button type="button" class="mega-footer-cta" onclick="openProposalModal()">
+                  <span>Request Free Audit</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </li>
           <li><a href="#portfolio" class="nav-item">Work</a></li>
           <li><a href="#packages" class="nav-item">Packages</a></li>
           <li><a href="#why-us" class="nav-item">Why Us</a></li>
@@ -73,11 +99,12 @@
 
       <!-- Header Actions -->
       <div class="header-actions">
+
         <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20a%20free%20growth%20audit%20for%20my%20business!" target="_blank" rel="noopener" class="nav-wa-pill" id="header-wa-btn" title="Chat on WhatsApp">
           <i class="fa-brands fa-whatsapp"></i>
           <span>Chat</span>
         </a>
-        <button class="btn btn-primary nav-cta-btn glow-btn" id="header-quote-btn" onclick="openProposalModal()">
+        <button class="nav-cta-btn" id="header-quote-btn" onclick="openProposalModal()">
           <span>Get Proposal</span>
           <i class="fa-solid fa-arrow-right"></i>
         </button>
@@ -95,11 +122,13 @@
   <div class="mobile-drawer" id="mobile-drawer">
     <div class="drawer-header">
       <div class="drawer-brand">
-        <span class="brand-name"><span class="nav-logo-pro" style="color: #0f172a !important; font-weight: 900 !important; display: inline-block !important;">PRO</span><span class="gradient-text">BUILD</span></span>
+        <span class="brand-name"><span class="nav-logo-pro">PRO</span><span class="gradient-text">BUILD</span></span>
       </div>
-      <button class="drawer-close" id="drawer-close" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+      <div class="drawer-header-actions">
+        <button class="drawer-close" id="drawer-close" aria-label="Close Menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
     </div>
     <ul class="drawer-links">
       <li><a href="#services" class="drawer-link">Services</a></li>
@@ -120,340 +149,99 @@
   </div>
   <div class="drawer-overlay" id="drawer-overlay"></div>
 
-  <!-- HERO SECTION -->
-  <section class="hero-section" id="hero">
-    <div class="container hero-container">
-      <div class="hero-content">
-        <!-- Futuristic Badge -->
-        <div class="hero-badge" data-aos="fade-up">
-          <span class="badge-icon"><i class="fa-solid fa-bolt"></i></span>
-          <span class="badge-text">Next-Gen Digital Solutions &amp; Platform Engineering</span>
-        </div>
-
-        <!-- Headline -->
-        <h1 class="hero-title" data-aos="fade-up">
-          We Build <span class="gradient-text">High-Converting Platforms</span> &amp; Scale Businesses With Precision <span class="neon-highlight">Google &amp; Meta Ads</span>
-        </h1>
-
-        <!-- Subheading -->
-        <p class="hero-subtext" data-aos="fade-up">
-          From full-stack E-Commerce stores for shops to bespoke business platforms and relentless ad funnels — ProBuild is the tech + marketing powerhouse designed to turn visitors into paying customers.
-        </p>
-
-        <!-- CTA Buttons -->
-        <div class="hero-actions" data-aos="fade-up">
-          <a href="#packages" class="btn btn-primary hero-btn glow-btn">
-            <span>Explore 3 Packages</span>
-            <i class="fa-solid fa-arrow-trend-up"></i>
-          </a>
-          <a href="#portfolio" class="btn btn-glass hero-btn">
-            <i class="fa-solid fa-cube"></i>
-            <span>View Recent Work</span>
-          </a>
-          <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20discuss%20a%20project%20for%20my%20business" target="_blank" rel="noopener" class="hero-wa-pill">
-            <i class="fa-brands fa-whatsapp"></i>
-            <span>Quick WhatsApp Call</span>
-          </a>
-        </div>
+  <!-- CINEMATIC LUXURY HERO SECTION (EXACT COMPONENT OVERLAYS ON CLEAN SCENE — NO FLOATING ANIMATION) -->
+  <section class="sq-cinema-hero" id="hero">
+    <!-- Overlay Stage with Exact Component Placements -->
+    <div class="sq-hero-overlay-stage">
+      <!-- 1. Top Right Tag (Build Brands Grow) -->
+      <div class="hero-layer-tag" title="Build Brands Grow">
+        <img src="assets/hero-layers/tight_build_brands_grow_tag.png" alt="Build Brands Grow" style="width: 100%; height: auto; display: block;" />
       </div>
 
-      <!-- Hero Visual (Interactive Live Cyber Growth Suite - Pure Animated UI) -->
-      <div class="hero-visual" id="hero-tilt-card">
-        <!-- Floating Micro-Badges Floating Over Edges -->
-        <div class="floating-badge badge-top-right">
-          <div class="badge-icon-wrap bg-cyan">
-            <i class="fa-solid fa-arrow-trend-up"></i>
-          </div>
-          <div class="badge-info">
-            <span class="tag-label">Meta &amp; Google Ads</span>
-            <span class="tag-stat">+5.2x ROAS Peak</span>
-          </div>
-        </div>
-
-        <div class="floating-badge badge-bottom-left">
-          <div class="badge-icon-wrap bg-emerald">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <div class="badge-info">
-            <span class="tag-label">Complete Digital Suite</span>
-            <span class="tag-stat">4 Pillars • 0.6s Load</span>
-          </div>
-        </div>
-
-        <div class="hero-glass-card growth-suite-card">
-          <!-- Window Header Bar -->
-          <div class="card-top-bar">
-            <div class="window-dots">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <div class="window-title">
-              <i class="fa-solid fa-server"></i> ProBuild Growth Suite v3.2
-            </div>
-            <div class="live-status">
-              <span class="live-dot"></span> LIVE ENGINE
-            </div>
-          </div>
-
-          <!-- Mini Pillar Tabs Switcher -->
-          <div class="suite-tabs-bar">
-            <button class="suite-tab active" data-suite="ads" onclick="switchSuiteTab('ads', this)">
-              <i class="fa-solid fa-bullseye"></i> <span>Ads Engine</span>
-            </button>
-            <button class="suite-tab" data-suite="web" onclick="switchSuiteTab('web', this)">
-              <i class="fa-solid fa-laptop-code"></i> <span>Web &amp; App</span>
-            </button>
-            <button class="suite-tab" data-suite="social" onclick="switchSuiteTab('social', this)">
-              <i class="fa-brands fa-instagram"></i> <span>Social Media</span>
-            </button>
-            <button class="suite-tab" data-suite="nfc" onclick="switchSuiteTab('nfc', this)">
-              <i class="fa-solid fa-wifi"></i> <span>Smart NFC</span>
-            </button>
-          </div>
-
-          <!-- Suite Content Display Screens -->
-          <div class="suite-viewport">
-            <!-- Screen 1: Digital Advertising (Default Active) -->
-            <div class="suite-screen active" id="pane-ads">
-              <div class="screen-metrics-header">
-                <div class="s-metric">
-                  <span class="s-lbl">Daily Ad Spend</span>
-                  <span class="s-val">₹24,800</span>
-                </div>
-                <div class="s-metric">
-                  <span class="s-lbl">Client Revenue</span>
-                  <span class="s-val gradient-text">₹1,34,500</span>
-                </div>
-                <div class="s-metric text-right">
-                  <span class="s-lbl">Blended ROAS</span>
-                  <span class="s-badge green-badge">5.42x ROAS ▲</span>
-                </div>
-              </div>
-
-              <!-- Animated Neon SVG Graph -->
-              <div class="suite-graph-wrap">
-                <svg viewBox="0 0 500 120" class="suite-svg" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="suite-cyan-grad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.22"/>
-                      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.01"/>
-                    </linearGradient>
-                    <linearGradient id="suite-violet-grad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.16"/>
-                      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.01"/>
-                    </linearGradient>
-                  </defs>
-                  <!-- Background Subtle Grid Lines -->
-                  <line x1="0" y1="28" x2="500" y2="28" stroke="rgba(15,23,42,0.06)" stroke-dasharray="4 4"/>
-                  <line x1="0" y1="60" x2="500" y2="60" stroke="rgba(15,23,42,0.06)" stroke-dasharray="4 4"/>
-                  <line x1="0" y1="92" x2="500" y2="92" stroke="rgba(15,23,42,0.06)" stroke-dasharray="4 4"/>
-                  
-                  <!-- Google Ads Violet Wave Fill & Line -->
-                  <path d="M0,90 C70,100 130,50 190,65 C250,80 310,30 370,45 C430,60 470,18 500,22 L500,120 L0,120 Z" fill="url(#suite-violet-grad)"/>
-                  <path class="svg-wave wave-violet" id="wave-line-violet" d="M0,90 C70,100 130,50 190,65 C250,80 310,30 370,45 C430,60 470,18 500,22"/>
-
-                  <!-- Meta Ads Cyan Wave Fill & Line -->
-                  <path d="M0,70 C55,75 110,25 170,45 C230,65 290,12 350,32 C410,55 460,8 500,6 L500,120 L0,120 Z" fill="url(#suite-cyan-grad)"/>
-                  <path class="svg-wave wave-cyan" id="wave-line-cyan" d="M0,70 C55,75 110,25 170,45 C230,65 290,12 350,32 C410,55 460,8 500,6"/>
-
-                  <!-- Glowing Active Data Nodes -->
-                  <circle cx="170" cy="45" r="3.5" fill="#2563eb" class="svg-pulse-node"/>
-                  <circle cx="350" cy="32" r="4" fill="#2563eb" class="svg-pulse-node"/>
-                  <circle cx="494" cy="6" r="4" fill="#2563eb" class="svg-pulse-node"/>
-                </svg>
-              </div>
-
-              <!-- Live Activity Feed Ticker -->
-              <div class="suite-live-ticker">
-                <span class="ticker-pulse cyan"></span>
-                <span class="ticker-text" id="ads-live-feed">⚡ Lead Generated: 3BHK Real Estate Enquiry (Meta Ads • Just now)</span>
-              </div>
-            </div>
-
-            <!-- Screen 2: Website & App Development -->
-            <div class="suite-screen" id="pane-web">
-              <div class="screen-metrics-header">
-                <div class="s-metric">
-                  <span class="s-lbl">Performance Score</span>
-                  <span class="s-val text-emerald">99 / 100</span>
-                </div>
-                <div class="s-metric">
-                  <span class="s-lbl">First Paint Time</span>
-                  <span class="s-val">0.58s</span>
-                </div>
-                <div class="s-metric text-right">
-                  <span class="s-lbl">Store Uptime</span>
-                  <span class="s-badge cyan-badge">99.98% Live</span>
-                </div>
-              </div>
-
-              <!-- Funnel Progress Visualization -->
-              <div class="funnel-container">
-                <div class="funnel-stage">
-                  <div class="stage-info"><span>Store Visits</span><strong>14,250</strong></div>
-                  <div class="stage-bar-bg"><div class="stage-bar-fill fill-100"></div></div>
-                </div>
-                <div class="funnel-stage">
-                  <div class="stage-info"><span>Product Carts</span><strong>6,840</strong></div>
-                  <div class="stage-bar-bg"><div class="stage-bar-fill fill-65"></div></div>
-                </div>
-                <div class="funnel-stage">
-                  <div class="stage-info"><span>Instant Checkouts</span><strong>2,140</strong></div>
-                  <div class="stage-bar-bg"><div class="stage-bar-fill fill-35"></div></div>
-                </div>
-              </div>
-
-              <!-- Live Store Ping -->
-              <div class="suite-live-ticker">
-                <span class="ticker-pulse emerald"></span>
-                <span class="ticker-text">🛍️ Order #9421 Confirmed: ₹3,499 (Razorpay UPI • WhatsApp Alert Sent)</span>
-              </div>
-            </div>
-
-            <!-- Screen 3: Social Media Management -->
-            <div class="suite-screen" id="pane-social">
-              <div class="screen-metrics-header">
-                <div class="s-metric">
-                  <span class="s-lbl">Organic Impressions</span>
-                  <span class="s-val">248.5K</span>
-                </div>
-                <div class="s-metric">
-                  <span class="s-lbl">Engagement Rate</span>
-                  <span class="s-val gradient-text">8.6%</span>
-                </div>
-                <div class="s-metric text-right">
-                  <span class="s-lbl">Growth Velocity</span>
-                  <span class="s-badge violet-badge">+380% MoM</span>
-                </div>
-              </div>
-
-              <!-- Social Engagement Grid -->
-              <div class="social-live-grid">
-                <div class="social-stat-pill">
-                  <i class="fa-solid fa-play text-cyan"></i>
-                  <div><span>Viral Reels</span><strong>84.2K Views</strong></div>
-                </div>
-                <div class="social-stat-pill">
-                  <i class="fa-solid fa-comments text-violet"></i>
-                  <div><span>Customer DMs</span><strong>420+ Leads</strong></div>
-                </div>
-                <div class="social-stat-pill">
-                  <i class="fa-solid fa-shield-heart text-emerald"></i>
-                  <div><span>Audience Trust</span><strong>100% Genuine</strong></div>
-                </div>
-              </div>
-
-              <!-- Live Social Ticker -->
-              <div class="suite-live-ticker">
-                <span class="ticker-pulse violet"></span>
-                <span class="ticker-text">🔥 New Inquiry via Instagram Reel: "Price details for luxury set?"</span>
-              </div>
-            </div>
-
-            <!-- Screen 4: NFC & Smart Business Solutions -->
-            <div class="suite-screen" id="pane-nfc">
-              <div class="screen-metrics-header">
-                <div class="s-metric">
-                  <span class="s-lbl">Smart NFC Taps</span>
-                  <span class="s-val">3,840</span>
-                </div>
-                <div class="s-metric">
-                  <span class="s-lbl">Google Reviews</span>
-                  <span class="s-val text-amber">4.9 ★★★★★</span>
-                </div>
-                <div class="s-metric text-right">
-                  <span class="s-lbl">Tap Conversion</span>
-                  <span class="s-badge amber-badge">68% Action</span>
-                </div>
-              </div>
-
-              <!-- 3D Smart Card Mockup Preview -->
-              <div class="nfc-card-preview">
-                <div class="nfc-chip-icon"><i class="fa-solid fa-wifi"></i></div>
-                <div class="nfc-card-info">
-                  <div class="nfc-brand">PROBUILD SMART PASS</div>
-                  <div class="nfc-sub">Contactless 1-Tap Google Reviews &amp; vCard</div>
-                </div>
-                <div class="nfc-pulse-ring"></div>
-              </div>
-
-              <!-- Live NFC Ticker -->
-              <div class="suite-live-ticker">
-                <span class="ticker-pulse amber"></span>
-                <span class="ticker-text">⚡ Contactless Tap Detected: Client saved contact details in Mumbai</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card Realtime Footer -->
-          <div class="card-footer-metrics">
-            <div class="footer-chip">
-              <i class="fa-solid fa-shield-halved"></i> 100% Real-Time Data
-            </div>
-            <div class="footer-chip">
-              <i class="fa-brands fa-google"></i> Google Partner Agency
-            </div>
-            <div class="footer-chip">
-              <i class="fa-brands fa-meta"></i> Meta Verified Ads API
-            </div>
-          </div>
-        </div>
+      <!-- 2. Mid Left: 01 Ideas Design Development Marketing -->
+      <div class="hero-layer-left" title="01 Ideas Design Development Marketing">
+        <img src="assets/hero-layers/tight_typo_01_ideas_left.png" alt="01 Ideas Design Development Marketing" style="width: 100%; height: auto; display: block;" />
       </div>
 
-      <!-- Live Metrics Strip (Counters - Full Width Ribbon) -->
-      <div class="hero-metrics-strip" id="metrics-counters">
-        <div class="metric-item">
-          <div class="metric-value">
-            <span class="odometer-number" data-target="4.8">0</span><span class="metric-suffix">Cr+</span>
-          </div>
-          <div class="metric-label">Client Revenue Scaled</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-value">
-            <span class="odometer-number" data-target="5.4">0</span><span class="metric-suffix">x</span>
-          </div>
-          <div class="metric-label">Average Ads ROAS</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-value">
-            <span class="odometer-number" data-target="65">0</span><span class="metric-suffix">+</span>
-          </div>
-          <div class="metric-label">Platforms &amp; Stores Built</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-value">
-            <span class="odometer-number" data-target="99.4">0</span><span class="metric-suffix">%</span>
-          </div>
-          <div class="metric-label">Client Satisfaction</div>
-        </div>
+      <!-- 3. Mid Right: Websites E-Commerce Mobile Apps Performance Marketing -->
+      <div class="hero-layer-right" title="Digital Services">
+        <img src="assets/hero-layers/tight_typo_services_right.png" alt="Websites E-Commerce Mobile Apps Performance Marketing" style="width: 100%; height: auto; display: block;" />
       </div>
+
+      <!-- 4. Center 3D Gold Title: One Place To Build It All -->
+      <div class="hero-layer-title" title="One Place To Build It All">
+        <img src="assets/hero-layers/tight_title_gold_3d.png" alt="One Place To Build It All" style="width: 100%; height: auto; display: block;" />
+      </div>
+
+      <!-- 5. Center Subtitle -->
+      <div class="hero-layer-sub">
+        WE BUILD DIGITAL PRODUCTS THAT HELP BRANDS GROW
+      </div>
+
+      <!-- 6. Center Glowing CTA Button: LET'S BUILD -> -->
+      <a href="#packages" class="hero-layer-btn" title="Let's Build — Explore Packages &amp; Pricing">
+        <img src="assets/hero-layers/tight_lets_build_glow_btn.png" alt="Let's Build" style="width: 100%; height: auto; display: block;" />
+      </a>
+
+      <!-- 7. Desk Left: Creative Brands Book -->
+      <div class="hero-layer-book" title="Creative Brands Architecture">
+        <img src="assets/hero-layers/tight_book_creative_brands.png" alt="Creative Brands Book" style="width: 100%; height: auto; display: block;" />
+      </div>
+
+      <!-- 8. Desk Left: Bronze Ring Tray -->
+      <div class="hero-layer-tray" title="Luxury Bronze Tray">
+        <img src="assets/hero-layers/tight_bronze_ring_tray.png" alt="Luxury Bronze Ring Tray" style="width: 100%; height: auto; display: block;" />
+      </div>
+
+      <!-- 9. Desk Center: Laptop on Desk -->
+      <div class="hero-layer-laptop" title="ProBuild Live Platform Engine">
+        <img src="assets/hero-layers/tight_laptop_render.png" alt="ProBuild Laptop Workspace" style="width: 100%; height: auto; display: block;" />
+      </div>
+
+      <!-- 10. Desk Right: Leather Journal & Pen -->
+      <div class="hero-layer-journal" title="Executive Strategy &amp; Growth Planning">
+        <img src="assets/hero-layers/tight_leather_journal_pen.png" alt="Leather Journal and Pen" style="width: 100%; height: auto; display: block;" />
+      </div>
+
+      <!-- 11. Bottom Desk: Performance Metrics Banner -->
+      <div class="hero-layer-stats" title="Performance Metrics">
+        <a href="#portfolio" title="View 50+ Scaled Brands &amp; Client Results" style="display: block;">
+          <img src="assets/hero-layers/tight_stats_banner_gold.png" alt="50+ Brands Scaled | 3X Average Growth | 98% Client Satisfaction | 24/7 Support" style="width: 100%; height: auto; display: block;" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Action Pills for Fast Conversion (Bottom Right) -->
+    <div class="sq-cinema-quick-bar" data-aos="fade-up" data-aos-delay="200">
+      <a href="#packages" class="sq-cinema-pill">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Explore Packages</span>
+      </a>
+      <a href="#portfolio" class="sq-cinema-pill">
+        <i class="fa-solid fa-cube"></i>
+        <span>View Work</span>
+      </a>
+      <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20discuss%20a%20project%20for%20my%20business" target="_blank" rel="noopener" class="sq-cinema-pill wa">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>WhatsApp Call</span>
+      </a>
     </div>
   </section>
 
-  <!-- TRUST & PARTNERS MARQUEE -->
-  <section class="trust-marquee-section">
-    <div class="container marquee-header-wrap">
-      <span class="marquee-tag">EMPOWERING BUSINESSES WITH ENTERPRISE-GRADE TECH &amp; AD PLATFORMS</span>
-    </div>
-    <div class="marquee-track-container">
-      <div class="marquee-track">
-        <div class="brand-item"><i class="fa-brands fa-shopify"></i> Shopify Plus</div>
-        <div class="brand-item"><i class="fa-brands fa-google"></i> Google Ads</div>
-        <div class="brand-item"><i class="fa-brands fa-meta"></i> Meta Business</div>
-        <div class="brand-item"><i class="fa-brands fa-react"></i> Next.js 15</div>
-        <div class="brand-item"><i class="fa-solid fa-credit-card"></i> Razorpay</div>
-        <div class="brand-item"><i class="fa-brands fa-stripe"></i> Stripe Payments</div>
-        <div class="brand-item"><i class="fa-brands fa-wordpress"></i> WooCommerce</div>
-        <div class="brand-item"><i class="fa-brands fa-aws"></i> AWS Cloud</div>
-        <div class="brand-item"><i class="fa-brands fa-whatsapp"></i> WhatsApp Business API</div>
-        <!-- Duplicate for infinite seamless scroll -->
-        <div class="brand-item"><i class="fa-brands fa-shopify"></i> Shopify Plus</div>
-        <div class="brand-item"><i class="fa-brands fa-google"></i> Google Ads</div>
-        <div class="brand-item"><i class="fa-brands fa-meta"></i> Meta Business</div>
-        <div class="brand-item"><i class="fa-brands fa-react"></i> Next.js 15</div>
-        <div class="brand-item"><i class="fa-solid fa-credit-card"></i> Razorpay</div>
-        <div class="brand-item"><i class="fa-brands fa-stripe"></i> Stripe Payments</div>
+  <!-- SQUARESPACE MONOCHROME PROOF STRIP -->
+  <section class="sq-proof-strip">
+    <div class="container sq-proof-container">
+      <div class="sq-proof-label">
+        <i class="fa-solid fa-shield-halved" style="color: #0052ff; margin-right: 6px;"></i> Trusted Tech &amp; Ad Infrastructure
+      </div>
+      <div class="sq-proof-logos">
+        <div class="sq-logo-pill"><i class="fa-brands fa-meta" style="color: #0081fb;"></i> Meta</div>
+        <div class="sq-logo-pill"><i class="fa-brands fa-google" style="color: #4285f4;"></i> Google</div>
+        <div class="sq-logo-pill"><i class="fa-brands fa-shopify" style="color: #95bf47;"></i> Shopify</div>
+        <div class="sq-logo-pill"><i class="fa-solid fa-credit-card" style="color: #0284c7;"></i> Razorpay</div>
+        <div class="sq-logo-pill"><i class="fa-brands fa-react" style="color: #61dafb;"></i> NEXT.js</div>
+        <div class="sq-logo-pill"><i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> WhatsApp Business</div>
+        <div class="sq-logo-pill"><i class="fa-brands fa-android" style="color: #3ddc84;"></i> Android</div>
       </div>
     </div>
   </section>
@@ -479,7 +267,7 @@
       <!-- Services Grid (4 Core Agency Pillars) -->
       <div class="services-grid">
         <!-- Service Card 1: Digital Advertising -->
-        <div class="service-card glass-card" data-tilt>
+        <div class="service-card glass-card" data-tilt id="service-card-ads">
           <div class="service-card-header">
             <div class="service-icon-box cyan-glow">
               <i class="fa-solid fa-bullseye"></i>
@@ -490,8 +278,28 @@
           <p class="service-text">
             Precision ad campaigns engineered to turn search intent and social feeds into paying customers, qualified bookings, and high-margin revenue.
           </p>
+
+          <!-- Interactive Meta Ads Packages Callout -->
+          <div class="meta-promo-card" onclick="openMetaAdsModal()" role="button" tabindex="0" title="Click to view Meta Ads Packages">
+            <div class="meta-promo-top">
+              <span class="meta-promo-badge-tag"><i class="fa-brands fa-meta"></i> META ADS SPECIAL</span>
+              <span class="meta-promo-price-tag">From ₹7,999/mo</span>
+            </div>
+            <div class="meta-promo-body">
+              <strong>🚀 Facebook &amp; Instagram Ads Packages</strong>
+              <span>Starter (₹7.9k), Growth (₹14.9k) &amp; Premium (₹24.9k)</span>
+            </div>
+            <div class="meta-promo-cta">
+              <span>View 3 Meta Ads Packages</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </div>
+
           <ul class="service-features">
-            <li><i class="fa-solid fa-check"></i> <strong>Meta Ads:</strong> Instagram &amp; Facebook targeted campaigns</li>
+            <li class="clickable-feature" onclick="openMetaAdsModal()" style="cursor: pointer;" title="Click to view Meta Ads Packages">
+              <i class="fa-solid fa-check"></i> <strong>Meta Ads:</strong> Instagram &amp; Facebook targeted campaigns
+              <span class="feature-action-pill"><i class="fa-brands fa-meta"></i> View Plans &rarr;</span>
+            </li>
             <li><i class="fa-solid fa-check"></i> <strong>Google Search Ads:</strong> High-intent keyword bidding &amp; Google Maps campaigns</li>
             <li><i class="fa-solid fa-check"></i> <strong>Lead Generation Funnels:</strong> Retargeting &amp; multi-channel conversion tracking</li>
             <li><i class="fa-solid fa-check"></i> <strong>Transparent Analytics:</strong> Comprehensive monthly performance &amp; ROAS reports</li>
@@ -500,9 +308,13 @@
             <i class="fa-solid fa-bullseye goal-icon"></i>
             <span><strong>Goal:</strong> Generate qualified leads, enquiries, bookings or sales.</span>
           </div>
-          <div class="service-footer">
-            <a href="#contact" class="service-btn" onclick="preselectService('Digital Advertising')">
-              Launch Campaign <i class="fa-solid fa-arrow-right"></i>
+          <div class="service-footer service-footer-stacked">
+            <button type="button" class="btn btn-primary service-btn-meta glow-btn" onclick="openMetaAdsModal()">
+              <i class="fa-brands fa-meta"></i> <span>View Meta Ads Packages</span>
+              <i class="fa-solid fa-bolt"></i>
+            </button>
+            <a href="#contact" class="service-btn-sub" onclick="preselectService('Digital Advertising')">
+              Launch Custom Campaign <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -601,7 +413,7 @@
               <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <div class="service-badge-group">
-              <span class="service-badge" style="background: rgba(99, 102, 241, 0.1); color: #4f46e5; border-color: rgba(99, 102, 241, 0.25);">Pillar 05 • Academic &amp; Student Tech</span>
+              <span class="service-badge badge-academic">Pillar 05 • Academic &amp; Student Tech</span>
               <span class="live-portal-pill"><i class="fa-solid fa-circle" style="color: #22c55e; font-size: 0.55rem; margin-right: 5px;"></i> Live Portal Active</span>
             </div>
           </div>
@@ -615,8 +427,8 @@
             <li><i class="fa-solid fa-check"></i> <strong>Viva &amp; Code Training:</strong> 1-on-1 code explanation, viva Q&amp;A preparation &amp; local machine setup</li>
             <li><i class="fa-solid fa-check"></i> <strong>Dedicated Student Portal:</strong> Instant browsing, verified repositories &amp; live demos at Project Hub</li>
           </ul>
-          <div class="service-goal-box" style="background: #eef2ff !important; border-color: #c7d2fe !important; border-left-color: #4f46e5 !important;">
-            <i class="fa-solid fa-graduation-cap goal-icon" style="color: #4f46e5 !important;"></i>
+          <div class="service-goal-box service-goal-box-academic">
+            <i class="fa-solid fa-graduation-cap goal-icon academic-goal-icon"></i>
             <span><strong>Goal:</strong> Help engineering, diploma &amp; CS/IT students secure A+ grades with 100% working code &amp; confident viva defence.</span>
           </div>
           <div class="service-footer">
@@ -661,7 +473,7 @@
         <!-- Case Study 1: D2C E-commerce Platform -->
         <div class="portfolio-card glass-card" data-category="ecommerce">
           <div class="card-image-wrap">
-            <img src="assets/images/ecommerce-showcase.jpg" alt="Urban Velocity Streetwear E-Commerce Platform" class="portfolio-thumb">
+            <img src="assets/images/ecommerce-showcase.jpg" alt="Neon Streetwear D2C Platform" class="portfolio-thumb">
             <div class="category-pill">E-Commerce Store</div>
             <div class="metrics-pill"><i class="fa-solid fa-arrow-trend-up"></i> ₹42L/Mo Revenue</div>
           </div>
@@ -695,7 +507,7 @@
         <!-- Case Study 2: Performance Marketing & Ads -->
         <div class="portfolio-card glass-card" data-category="ads">
           <div class="card-image-wrap">
-            <img src="assets/images/ads-showcase.jpg" alt="Aggregated Meta & Google Ads Scaling Dashboard" class="portfolio-thumb">
+            <img src="assets/images/ads-showcase.jpg" alt="Nexus Multi-Channel Scaling" class="portfolio-thumb">
             <div class="category-pill">Meta &amp; Google Ads</div>
             <div class="metrics-pill"><i class="fa-solid fa-chart-line"></i> 5.2x Average ROAS</div>
           </div>
@@ -729,7 +541,7 @@
         <!-- Case Study 3: Custom Business Platform -->
         <div class="portfolio-card glass-card" data-category="platform">
           <div class="card-image-wrap">
-            <img src="assets/images/platform-showcase.jpg" alt="Aether Analytics Enterprise Platform" class="portfolio-thumb">
+            <img src="assets/images/platform-showcase.jpg" alt="Aether Business Operations Portal" class="portfolio-thumb">
             <div class="category-pill">Custom Platform</div>
             <div class="metrics-pill"><i class="fa-solid fa-users"></i> 15.4K Active Users</div>
           </div>
@@ -763,7 +575,7 @@
         <!-- Case Study 4: Boutique Fashion Shop E-Commerce -->
         <div class="portfolio-card glass-card" data-category="ecommerce">
           <div class="card-image-wrap">
-            <img src="assets/images/shop-ecommerce.jpg" alt="Boutique Luxe Mobile Store & App" class="portfolio-thumb">
+            <img src="assets/images/shop-ecommerce.jpg" alt="Boutique Luxe Online Store" class="portfolio-thumb">
             <div class="category-pill">E-Commerce Store</div>
             <div class="metrics-pill"><i class="fa-solid fa-bolt"></i> 10-Day Launch</div>
           </div>
@@ -797,154 +609,588 @@
     </div>
   </section>
 
+  <!-- INTERACTIVE PROJECT COST & ROI CALCULATOR (Squarespace Interactive Estimator) -->
+  <section class="calculator-section section-padding" id="calculator">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">
+          <i class="fa-solid fa-calculator"></i> INSTANT QUOTE &amp; ROI ESTIMATOR
+        </div>
+        <h2 class="section-title">
+          Interactive <span class="gradient-text">Cost &amp; ROI Calculator</span>
+        </h2>
+        <p class="section-description">
+          Estimate your investment, timeline, and projected growth in real-time. Pick your service, scale your scope, and get an instant transparent quote.
+        </p>
+      </div>
+
+      <div class="calc-wrapper glass-card">
+        <div class="calc-grid">
+          <!-- Left Column: Interactive Selectors -->
+          <div class="calc-controls-col">
+            <div class="calc-step-group">
+              <span class="calc-step-num">01</span>
+              <div class="calc-step-content">
+                <label class="calc-step-title">Select Primary Service</label>
+                <div class="calc-service-pills" id="calc-service-pills">
+                  <button type="button" class="calc-pill active" data-service="web">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <span>Web &amp; App</span>
+                  </button>
+                  <button type="button" class="calc-pill" data-service="ads">
+                    <i class="fa-brands fa-meta"></i>
+                    <span>Meta Ads</span>
+                  </button>
+                  <button type="button" class="calc-pill" data-service="nfc">
+                    <i class="fa-solid fa-wifi"></i>
+                    <span>Smart NFC</span>
+                  </button>
+                  <button type="button" class="calc-pill" data-service="college">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>College Project</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-step-group">
+              <span class="calc-step-num">02</span>
+              <div class="calc-step-content">
+                <div class="calc-tier-header">
+                  <label class="calc-step-title" id="calc-scope-label">Select Project Scope</label>
+                  <span class="calc-tier-active-pill" id="calc-tier-active-pill">GROWTH TIER</span>
+                </div>
+                <div class="calc-range-wrap">
+                  <input type="range" min="1" max="3" value="2" class="calc-slider" id="calc-tier-slider" aria-label="Project Tier Slider">
+                  <div class="calc-ticks">
+                    <span class="tick-step" data-val="1">Starter</span>
+                    <span class="tick-step active" data-val="2">Growth (Popular)</span>
+                    <span class="tick-step" data-val="3">Dominance</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-step-group">
+              <span class="calc-step-num">03</span>
+              <div class="calc-step-content">
+                <label class="calc-step-title">High-Impact Add-ons</label>
+                <div class="calc-addons-list">
+                  <label class="addon-checkbox-label">
+                    <input type="checkbox" id="addon-seo" class="addon-input" checked>
+                    <span class="addon-custom-box"><i class="fa-solid fa-check"></i></span>
+                    <span class="addon-info">
+                      <span class="addon-name">Speed &amp; Search Engine Optimization (99+ PageSpeed)</span>
+                      <span class="addon-price">+₹2,499</span>
+                    </span>
+                  </label>
+                  <label class="addon-checkbox-label">
+                    <input type="checkbox" id="addon-wa" class="addon-input">
+                    <span class="addon-custom-box"><i class="fa-solid fa-check"></i></span>
+                    <span class="addon-info">
+                      <span class="addon-name">WhatsApp Automated Lead CRM Bot</span>
+                      <span class="addon-price">+₹1,999</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Projected Return & Investment Card -->
+          <div class="calc-summary-col">
+            <div class="calc-summary-card">
+              <div class="summary-top-tag">
+                <span class="live-pulse-dot"></span>
+                <span>REAL-TIME ESTIMATE</span>
+              </div>
+              <div class="summary-price-box">
+                <span class="sum-currency">₹</span>
+                <span class="sum-price" id="calc-price-display">17,498</span>
+                <span class="sum-period" id="calc-period-display">/one-time</span>
+              </div>
+              <div class="summary-plan-badge" id="calc-plan-summary">Website &amp; App Development &bull; Growth Tier</div>
+
+              <!-- ROI & Timeline Metrics -->
+              <div class="calc-metrics-row">
+                <div class="calc-metric-chip">
+                  <span class="cm-lbl"><i class="fa-regular fa-clock"></i> Timeline</span>
+                  <strong class="cm-val" id="calc-timeline-display">7 - 10 Days</strong>
+                </div>
+                <div class="calc-metric-chip">
+                  <span class="cm-lbl"><i class="fa-solid fa-arrow-trend-up"></i> Projected ROI</span>
+                  <strong class="cm-val text-emerald" id="calc-roi-display">+320% Leads</strong>
+                </div>
+              </div>
+
+              <!-- Deliverable Checklist -->
+              <div class="calc-deliverables-box">
+                <div class="deliv-heading">Included in this plan:</div>
+                <ul class="deliv-list" id="calc-deliverables-list">
+                  <!-- Injected via script.js -->
+                </ul>
+              </div>
+
+              <!-- One-Click WhatsApp Booking CTA -->
+              <a href="#" target="_blank" rel="noopener" class="btn btn-wa-green btn-full calc-wa-cta" id="calc-wa-cta-btn">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Claim This Estimate On WhatsApp</span>
+              </a>
+              <span class="calc-guarantee-note"><i class="fa-solid fa-shield-halved"></i> 100% Satisfaction Guarantee &bull; Direct Founder Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 3 TAILORED PACKAGES (PRICING & SOLUTIONS) -->
   <section class="packages-section section-padding" id="packages">
     <div class="container">
       <div class="section-header text-center">
         <div class="section-subtitle">
-          <i class="fa-solid fa-tags"></i> TRANSPARENT PRICING • HIGH ROI
+          <i class="fa-solid fa-sparkles"></i> DIWALI SPECIAL OFFER &bull; FIRST 10 CUSTOMERS
         </div>
         <h2 class="section-title">
-          Choose Your <span class="gradient-text">ProBuild Package</span>
+          Choose the Right Plan for <span class="gradient-text">Your Business</span>
         </h2>
+        <div class="section-marathi-banner">
+          <span class="marathi-pill-badge">✨ "Your Business's Digital Growth Is Our Responsibility!" ✨</span>
+        </div>
         <p class="section-description">
-          Whether you need a complete turn-key E-Commerce store for your shop or ongoing aggressive Google &amp; Meta Ads management, we have a transparent tier engineered for your exact stage.
+          Websites &bull; Social Media &bull; Marketing &bull; Branding &bull; All in One Place.<br>
+          High-performance digital platforms and high-ROI advertising engineered to scale your business with full confidence.
         </p>
 
-        <!-- Pricing Toggle Switch (Monthly Growth Retainer vs One-Time Platform Build) -->
-        <div class="pricing-toggle-wrap">
-          <span class="toggle-label active" id="label-monthly">Full Growth Retainer (Ads + Tech)</span>
-          <label class="switch-toggle" for="pricing-toggle">
-            <input type="checkbox" id="pricing-toggle">
-            <span class="toggle-slider"></span>
-          </label>
-          <span class="toggle-label" id="label-onetime">Platform Build Only (One-Time)</span>
+        <!-- Pricing Category Switcher (All-In-One Main Business Plans vs Meta Ads Packages) -->
+        <div class="pricing-tabs-wrap">
+          <div class="pricing-tabs-pill">
+            <button type="button" class="pricing-tab-btn active" id="tab-btn-main" onclick="switchPricingTab('main')">
+              <i class="fa-solid fa-layer-group"></i> <span>All-in-One Business Plans</span>
+              <span class="tab-highlight-tag">From ₹9,999</span>
+            </button>
+            <button type="button" class="pricing-tab-btn" id="tab-btn-meta" onclick="switchPricingTab('meta')">
+              <i class="fa-brands fa-meta"></i> <span>Meta Ads Packages</span>
+              <span class="tab-highlight-tag">From ₹7,999/mo</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Pricing Cards Grid (3 Packages) -->
-      <div class="packages-grid">
-        <!-- Package 1: START-UP / LAUNCHPAD -->
-        <div class="package-card glass-card" id="pkg-card-1">
+      <!-- 1. MAIN ALL-IN-ONE BUSINESS PLANS GRID (Websites, Social Media, Marketing, NFC) -->
+      <div class="packages-grid main-packages-grid" id="main-packages-grid">
+        <!-- Package 1: STARTER -->
+        <div class="package-card glass-card main-pkg-card" id="main-pkg-starter">
           <div class="pkg-header">
-            <span class="pkg-tier-badge">TIER 1 • LAUNCHPAD</span>
-            <h3 class="pkg-title">START-UP</h3>
-            <p class="pkg-desc">Ideal for local shops, boutiques &amp; new brands ready to establish a professional digital selling presence.</p>
+            <div class="pkg-icon-badge-row">
+              <div class="pkg-plan-icon">
+                <i class="fa-solid fa-rocket"></i>
+              </div>
+              <span class="pkg-tier-badge">TIER 1 &bull; STARTER</span>
+            </div>
+            <h3 class="pkg-title">STARTER</h3>
+            <p class="pkg-desc">Perfect for small businesses starting their online journey.</p>
+            
+            <div class="pkg-strikethrough-row">
+              <span class="price-strikethrough">₹15,000</span>
+              <span class="diwali-offer-tag"><i class="fa-solid fa-gift"></i> Diwali Offer</span>
+            </div>
             <div class="pkg-price-wrap">
               <span class="currency">₹</span>
-              <span class="price-amount" data-monthly="24,999" data-onetime="34,999">24,999</span>
-              <span class="price-period" data-monthly="/month" data-onetime="one-time">/month</span>
+              <span class="price-amount">9,999</span>
             </div>
-            <div class="pkg-timeline">
-              <i class="fa-solid fa-stopwatch"></i> 7 to 10 Days Delivery
+            <div class="pkg-setup-term">
+              <i class="fa-solid fa-clock-rotate-left"></i> One-time setup + 1 month marketing
+            </div>
+
+            <div class="pkg-best-for">
+              <strong><i class="fa-solid fa-bullseye"></i> Best for:</strong>
+              Local Businesses, Shops, Restaurants, Coaching Classes, Startups
             </div>
           </div>
 
           <div class="pkg-body">
-            <div class="features-category-title">Platform &amp; E-Commerce Build</div>
+            <div class="features-category-title">Package Deliverables</div>
             <ul class="pkg-feature-list">
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> High-Speed Mobile E-Commerce Store or Website</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Razorpay, UPI &amp; Cash on Delivery Gateways</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Up to 50 Products Catalog / Inventory Setup</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> WhatsApp Direct Chat &amp; Ordering Widget</li>
-            </ul>
-
-            <div class="features-category-title">Digital Marketing &amp; Visibility</div>
-            <ul class="pkg-feature-list">
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Meta Ads Pixel Setup &amp; Verification (CAPI)</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Starter Meta Ads Campaign (Facebook &amp; Insta)</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Google My Business Profile 100% Optimization</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Google Search Console &amp; Analytics (GA4)</li>
-              <li class="feat-disabled"><i class="fa-solid fa-xmark"></i> Google Search &amp; Performance Max Ads</li>
-              <li class="feat-disabled"><i class="fa-solid fa-xmark"></i> Automated WhatsApp Abandoned Cart Funnel</li>
-              <li class="feat-disabled"><i class="fa-solid fa-xmark"></i> Weekly Dedicated Strategy Sprints</li>
+              <li class="feat-enabled"><i class="fa-solid fa-globe"></i> <div><strong>5 – 10 Pages Static Website</strong><br><span style="font-size: 0.8rem; color: #64748b;">Professional, responsive design</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-location-dot"></i> <div><strong>Google Maps Integration</strong><br><span style="font-size: 0.8rem; color: #64748b;">Show your exact location</span></div></li>
+              <li class="feat-enabled"><i class="fa-brands fa-whatsapp"></i> <div><strong>WhatsApp Enquiry Integration</strong><br><span style="font-size: 0.8rem; color: #64748b;">Direct chat with customers</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-phone"></i> <div><strong>Click to Call Button</strong><br><span style="font-size: 0.8rem; color: #64748b;">One-tap calling from website</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-share-nodes"></i> <div><strong>Social Media Setup</strong><br><span style="font-size: 0.8rem; color: #64748b;">Facebook, Instagram, YouTube (or as required)</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-calendar-days"></i> <div><strong>Social Media Handling (1 Month)</strong><br><span style="font-size: 0.8rem; color: #64748b;">16 Posts (4 per week) + 3 Reels</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-wifi"></i> <div><strong>1 NFC Tag</strong><br><span style="font-size: 0.8rem; color: #64748b;">For easy sharing of your business profile</span></div></li>
             </ul>
           </div>
 
-          <div class="pkg-footer">
-            <button class="btn btn-outline btn-full" onclick="selectPackage('Startup (Launchpad)')">
-              <span>Choose Start-Up</span>
+          <div class="pkg-footer pkg-footer-actions">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20STARTER%20Plan%20(%E2%82%B99,999%20-%20Diwali%20Offer)!" target="_blank" rel="noopener" class="btn btn-wa-green btn-full">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Started Now</span> <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <button class="btn btn-outline btn-full btn-sm" onclick="selectPackage('All-In-One Starter (₹9,999)')">
+              <span>Book via Form</span>
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>
 
-        <!-- Package 2: GROWTH ENGINE (MOST POPULAR / BEST VALUE) -->
-        <div class="package-card glass-card featured-package" id="pkg-card-2">
+        <!-- Package 2: GROWTH (MOST POPULAR) -->
+        <div class="package-card glass-card featured-package main-pkg-card" id="main-pkg-growth">
           <div class="popular-ribbon">
-            <i class="fa-solid fa-fire"></i> MOST POPULAR &bull; BEST VALUE
+            <i class="fa-solid fa-crown"></i> MOST POPULAR &bull; BEST VALUE
           </div>
           <div class="pkg-header">
-            <span class="pkg-tier-badge badge-glow">TIER 2 • AGGRESSIVE SCALE</span>
-            <h3 class="pkg-title">GROWTH ENGINE</h3>
-            <p class="pkg-desc">For ambitious businesses scaling to ₹10L - ₹50L/month revenue with high-ROAS ads and high-converting platforms.</p>
+            <div class="pkg-icon-badge-row">
+              <div class="pkg-plan-icon icon-growth">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <span class="pkg-tier-badge badge-glow">TIER 2 &bull; SCALE</span>
+            </div>
+            <h3 class="pkg-title">GROWTH</h3>
+            <p class="pkg-desc">Ideal for growing businesses that want more control &amp; flexibility.</p>
+            
+            <div class="pkg-strikethrough-row">
+              <span class="price-strikethrough">₹20,000</span>
+              <span class="diwali-offer-tag"><i class="fa-solid fa-gift"></i> Diwali Offer</span>
+            </div>
             <div class="pkg-price-wrap">
               <span class="currency">₹</span>
-              <span class="price-amount" data-monthly="49,999" data-onetime="69,999">49,999</span>
-              <span class="price-period" data-monthly="/month" data-onetime="one-time">/month</span>
+              <span class="price-amount">14,999</span>
             </div>
-            <div class="pkg-timeline">
-              <i class="fa-solid fa-bolt"></i> Continuous Sprints &bull; 14-Day Overhaul
+            <div class="pkg-setup-term">
+              <i class="fa-solid fa-clock-rotate-left"></i> One-time setup + 1 month marketing
+            </div>
+
+            <div class="pkg-best-for">
+              <strong><i class="fa-solid fa-bullseye"></i> Best for:</strong>
+              Growing Businesses, Real Estate, Salons, Clinics, Coaching, Service Providers
             </div>
           </div>
 
           <div class="pkg-body">
-            <div class="features-category-title">Everything in Start-Up, plus:</div>
+            <div class="features-category-title">Package Deliverables</div>
             <ul class="pkg-feature-list">
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Bespoke High-Performance Custom Store (Next.js/Shopify)</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Advanced Conversion Rate Optimization (CRO) UX</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Full Meta Ads Management (Creative design &amp; Copy)</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Google Performance Max &amp; High-Intent Search Ads</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Automated WhatsApp Abandoned Cart &amp; Broadcasts</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Lookalike &amp; Deep Dynamic Retargeting Funnels</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Weekly Video Growth Reports &amp; Live Dashboard</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Dedicated Growth Strategist on WhatsApp</li>
+              <li class="feat-enabled"><i class="fa-solid fa-laptop-code"></i> <div><strong>11 – 15 Pages Dynamic Website</strong><br><span style="font-size: 0.8rem; color: #64748b;">Modern design with editable content</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-location-dot"></i> <div><strong>Google Maps Integration</strong><br><span style="font-size: 0.8rem; color: #64748b;">Show your exact location</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-sliders"></i> <div><strong>Admin Panel</strong><br><span style="font-size: 0.8rem; color: #64748b;">Easily manage content, images &amp; pages</span></div></li>
+              <li class="feat-enabled"><i class="fa-brands fa-whatsapp"></i> <div><strong>WhatsApp E-commerce Integration</strong><br><span style="font-size: 0.8rem; color: #64748b;">Product enquiry &amp; order via WhatsApp</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-share-nodes"></i> <div><strong>Social Media Integration</strong><br><span style="font-size: 0.8rem; color: #64748b;">Link all your social media on website</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-phone"></i> <div><strong>Click to Call Button</strong><br><span style="font-size: 0.8rem; color: #64748b;">One-tap calling from website</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-hashtag"></i> <div><strong>Social Media Setup</strong><br><span style="font-size: 0.8rem; color: #64748b;">Facebook, Instagram, YouTube (or as required)</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-calendar-days"></i> <div><strong>Social Media Handling (1 Month)</strong><br><span style="font-size: 0.8rem; color: #64748b;">20 Posts (5 per week) + 4 Reels</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-wifi"></i> <div><strong>3 NFC Tags</strong><br><span style="font-size: 0.8rem; color: #64748b;">Share multiple links (Website, Social Media, etc.)</span></div></li>
             </ul>
           </div>
 
-          <div class="pkg-footer">
-            <button class="btn btn-primary btn-full glow-btn" onclick="selectPackage('Growth Engine (Scale)')">
-              <span>Choose Growth Engine</span>
+          <div class="pkg-footer pkg-footer-actions">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20choose%20the%20GROWTH%20Plan%20(%E2%82%B914,999%20-%20Diwali%20Offer)!" target="_blank" rel="noopener" class="btn btn-primary btn-full glow-btn">
+              <i class="fa-brands fa-whatsapp"></i> <span>Choose Growth Plan</span> <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <button class="btn btn-outline btn-full btn-sm" onclick="selectPackage('All-In-One Growth (₹14,999)')">
+              <span>Book via Form</span>
               <i class="fa-solid fa-bolt"></i>
             </button>
           </div>
         </div>
 
-        <!-- Package 3: DOMINANCE / ENTERPRISE -->
-        <div class="package-card glass-card" id="pkg-card-3">
+        <!-- Package 3: PREMIUM -->
+        <div class="package-card glass-card main-pkg-card" id="main-pkg-premium">
           <div class="pkg-header">
-            <span class="pkg-tier-badge">TIER 3 • ENTERPRISE</span>
-            <h3 class="pkg-title">DOMINANCE</h3>
-            <p class="pkg-desc">Full-scale digital takeover. Custom platforms, multi-channel advertising, and continuous conversion engineering.</p>
+            <div class="pkg-icon-badge-row">
+              <div class="pkg-plan-icon icon-premium">
+                <i class="fa-solid fa-crown"></i>
+              </div>
+              <span class="pkg-tier-badge">TIER 3 &bull; FULL SOLUTION</span>
+            </div>
+            <h3 class="pkg-title">PREMIUM</h3>
+            <p class="pkg-desc">Complete digital solution for serious businesses.</p>
+            
+            <div class="pkg-strikethrough-row">
+              <span class="price-strikethrough">₹40,000</span>
+              <span class="diwali-offer-tag"><i class="fa-solid fa-gift"></i> Diwali Offer</span>
+            </div>
             <div class="pkg-price-wrap">
               <span class="currency">₹</span>
-              <span class="price-amount" data-monthly="99,999" data-onetime="1,49,999">99,999</span>
-              <span class="price-period" data-monthly="/month" data-onetime="one-time">/month</span>
+              <span class="price-amount">34,999</span>
             </div>
-            <div class="pkg-timeline">
-              <i class="fa-solid fa-crown"></i> Dedicated Full-Stack Squad
+            <div class="pkg-setup-term">
+              <i class="fa-solid fa-clock-rotate-left"></i> One-time setup + 1 month marketing
+            </div>
+
+            <div class="pkg-best-for">
+              <strong><i class="fa-solid fa-bullseye"></i> Best for:</strong>
+              Established Businesses, E-commerce, Restaurants, Retail, Real Estate, Brands
             </div>
           </div>
 
           <div class="pkg-body">
-            <div class="features-category-title">Everything in Growth Engine, plus:</div>
+            <div class="features-category-title">Package Deliverables</div>
             <ul class="pkg-feature-list">
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Custom Enterprise Web App &amp; Cloud Platform</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Omnichannel Ads (Meta + Google + YouTube + LinkedIn)</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Continuous A/B Split Testing on Landing Pages</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> AI Chatbot &amp; Custom CRM Workflow Automation</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Advanced Fraud Detection &amp; High-Security Cloud Setup</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> 24/7 Priority Emergency Support SLA</li>
-              <li class="feat-enabled"><i class="fa-solid fa-check"></i> Bi-weekly Strategy Planning Board Meetings</li>
+              <li class="feat-enabled"><i class="fa-solid fa-globe"></i> <div><strong>Dynamic Website (Full Features)</strong><br><span style="font-size: 0.8rem; color: #64748b;">Modern, SEO friendly, fully responsive</span></div></li>
+              <li class="feat-enabled"><i class="fa-brands fa-android"></i> <div><strong>Android Mobile App</strong><br><span style="font-size: 0.8rem; color: #64748b;">Customer app with your brand</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-gauge-high"></i> <div><strong>Admin Dashboard</strong><br><span style="font-size: 0.8rem; color: #64748b;">Manage website, orders, users &amp; more</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-boxes-stacked"></i> <div><strong>Product Management</strong><br><span style="font-size: 0.8rem; color: #64748b;">Add / edit products, categories, gallery</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-cart-shopping"></i> <div><strong>Order Management</strong><br><span style="font-size: 0.8rem; color: #64748b;">Track &amp; manage orders easily</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-truck-fast"></i> <div><strong>Delivery Management</strong><br><span style="font-size: 0.8rem; color: #64748b;">Assign &amp; track deliveries</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-credit-card"></i> <div><strong>Payment Gateway Integration</strong><br><span style="font-size: 0.8rem; color: #64748b;">UPI, Cards, Net Banking</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-folder-tree"></i> <div><strong>Category, Company &amp; Gallery Management</strong><br><span style="font-size: 0.8rem; color: #64748b;">Organize products and content</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-users-gear"></i> <div><strong>Customer Management</strong><br><span style="font-size: 0.8rem; color: #64748b;">Manage customer database</span></div></li>
+              <li class="feat-enabled"><i class="fa-solid fa-bullhorn"></i> <div><strong>Social Media Marketing (1 Month)</strong><br><span style="font-size: 0.8rem; color: #64748b;">30 Posts + 5 Reels (strategy, design, caption &amp; posting)</span></div></li>
             </ul>
           </div>
 
-          <div class="pkg-footer">
-            <button class="btn btn-outline btn-full" onclick="selectPackage('Dominance (Enterprise)')">
-              <span>Choose Dominance</span>
+          <div class="pkg-footer pkg-footer-actions">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20PREMIUM%20Plan%20(%E2%82%B934,999%20-%20Diwali%20Offer)!" target="_blank" rel="noopener" class="btn btn-wa-green btn-full">
+              <i class="fa-brands fa-whatsapp"></i> <span>Go Premium</span> <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <button class="btn btn-outline btn-full btn-sm" onclick="selectPackage('All-In-One Premium (₹34,999)')">
+              <span>Book via Form</span>
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Main Packages Bottom Banner (Poster Footer: Marathi Callout, 3 Direct Lines, 4 Pillars & Social Links) -->
+      <div class="packages-bottom-banner" id="main-section-banner">
+        <!-- Marathi Callout -->
+        <div class="banner-marathi-callout">
+          <span class="marathi-heading">Contact Us Today! Let's Discuss and Scale Your Business Digitally</span>
+          <span class="marathi-sub">Expert guidance and rapid execution to accelerate your digital growth.</span>
+        </div>
+
+        <!-- 3 Direct Contact Lines -->
+        <div class="team-contacts-grid">
+          <div class="team-contact-card">
+            <div class="tc-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="tc-info">
+              <span class="tc-name">Aditya Ubale</span>
+              <a href="tel:+919284248444" class="tc-phone"><i class="fa-solid fa-phone"></i> +91 92842 48444</a>
+            </div>
+            <a href="https://wa.me/919284248444?text=Hi%20Aditya,%20I%20want%20to%20discuss%20a%20ProBuild%20package!" target="_blank" rel="noopener" class="tc-wa" title="WhatsApp Aditya"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+
+          <div class="team-contact-card">
+            <div class="tc-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="tc-info">
+              <span class="tc-name">Shubham Torkad</span>
+              <a href="tel:+919021321877" class="tc-phone"><i class="fa-solid fa-phone"></i> +91 90213 21877</a>
+            </div>
+            <a href="https://wa.me/919021321877?text=Hi%20Shubham,%20I%20want%20to%20discuss%20a%20ProBuild%20package!" target="_blank" rel="noopener" class="tc-wa" title="WhatsApp Shubham"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+
+          <div class="team-contact-card">
+            <div class="tc-avatar"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="tc-info">
+              <span class="tc-name">Aryan Date</span>
+              <a href="tel:+919322151641" class="tc-phone"><i class="fa-solid fa-phone"></i> +91 93221 51641</a>
+            </div>
+            <a href="https://wa.me/919322151641?text=Hi%20Aryan,%20I%20want%20to%20discuss%20a%20ProBuild%20package!" target="_blank" rel="noopener" class="tc-wa" title="WhatsApp Aryan"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- 4 Poster Pillars -->
+        <div class="poster-pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon"><i class="fa-solid fa-headset"></i></div>
+            <div class="pillar-text">
+              <strong>Dedicated Support</strong>
+              <span>We're here whenever you need help</span>
+            </div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon"><i class="fa-solid fa-gears"></i></div>
+            <div class="pillar-text">
+              <strong>Custom Solutions</strong>
+              <span>Tailored to your business needs</span>
+            </div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="pillar-text">
+              <strong>On-Time Delivery</strong>
+              <span>Your project, our commitment</span>
+            </div>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="pillar-text">
+              <strong>Growth Focused</strong>
+              <span>We help you get real results</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Poster Social Follow Bar -->
+        <div class="poster-social-follow">
+          <span class="ps-label">Follow Us On Social Media :</span>
+          <div class="ps-links">
+            <a href="https://instagram.com/probuilddigital" target="_blank" rel="noopener" class="ps-btn ps-ig"><i class="fa-brands fa-instagram"></i> @probuilddigital</a>
+            <a href="https://facebook.com/probuilddigital" target="_blank" rel="noopener" class="ps-btn ps-fb"><i class="fa-brands fa-facebook-f"></i> Probuild Digital</a>
+            <a href="https://www.linkedin.com/company/probuild-digital-solutions" target="_blank" rel="noopener" class="ps-btn ps-li"><i class="fa-brands fa-linkedin-in"></i> Probuild Digital</a>
+            <a href="https://youtube.com/@probuilddigital" target="_blank" rel="noopener" class="ps-btn ps-yt"><i class="fa-brands fa-youtube"></i> Probuild Digital</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. META ADS PACKAGES GRID (Facebook & Instagram Ads) -->
+      <div class="packages-grid meta-packages-grid" id="meta-packages-grid" style="display: none;">
+        <!-- Meta Package 1: STARTER -->
+        <div class="package-card glass-card meta-card" id="meta-pkg-starter">
+          <div class="pkg-header">
+            <div class="meta-card-badge-row">
+              <span class="meta-card-medal">🥉</span>
+              <span class="pkg-tier-badge">TIER 1 &bull; STARTER</span>
+            </div>
+            <h3 class="pkg-title">STARTER</h3>
+            <p class="pkg-desc">Perfect for small businesses starting with Facebook &amp; Instagram Ads.</p>
+            <div class="pkg-strikethrough-row">
+              <span class="price-strikethrough">₹10,000</span>
+              <span class="diwali-offer-tag"><i class="fa-solid fa-gift"></i> Diwali Offer</span>
+            </div>
+            <div class="pkg-price-wrap">
+              <span class="currency">₹</span>
+              <span class="price-amount">7,999</span>
+              <span class="price-period">/month</span>
+            </div>
+            <div class="pkg-timeline">
+              <i class="fa-solid fa-stopwatch"></i> Rapid 3-Day Campaign Setup
+            </div>
+          </div>
+
+          <div class="pkg-body">
+            <div class="features-category-title">Package Deliverables</div>
+            <ul class="pkg-feature-list">
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>1 Campaign</strong> engineered for high click-through</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>2 Ad Creatives</strong> (High-impact visuals / graphics)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Audience Targeting</strong> (Demographics, interests &amp; geo)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Ad Copywriting</strong> (High-converting headlines &amp; CTAs)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Weekly Optimization</strong> (Bid adjustments &amp; budget pruning)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Monthly Report</strong> (Transparent performance breakdown)</li>
+            </ul>
+          </div>
+
+          <div class="pkg-footer pkg-footer-actions">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20Meta%20Ads%20STARTER%20package%20(%E2%82%B97,999/month%20-%20Diwali%20Offer)!" target="_blank" rel="noopener" class="btn btn-wa-green btn-full">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Starter on WhatsApp</span>
+            </a>
+            <button class="btn btn-outline btn-full btn-sm" onclick="selectMetaPackage('Meta Ads Starter (₹7,999/mo)')">
+              <span>Book via Form</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Meta Package 2: GROWTH (MOST POPULAR) -->
+        <div class="package-card glass-card featured-package meta-card" id="meta-pkg-growth">
+          <div class="popular-ribbon">
+            <i class="fa-solid fa-fire"></i> MOST POPULAR &bull; BEST VALUE
+          </div>
+          <div class="pkg-header">
+            <div class="meta-card-badge-row">
+              <span class="meta-card-medal">🥈</span>
+              <span class="pkg-tier-badge badge-glow">TIER 2 &bull; SCALE</span>
+            </div>
+            <h3 class="pkg-title">GROWTH</h3>
+            <p class="pkg-desc">Ideal for growing businesses scaling leads and customer acquisition.</p>
+            <div class="pkg-strikethrough-row">
+              <span class="price-strikethrough">₹20,000</span>
+              <span class="diwali-offer-tag"><i class="fa-solid fa-gift"></i> Diwali Offer</span>
+            </div>
+            <div class="pkg-price-wrap">
+              <span class="currency">₹</span>
+              <span class="price-amount">14,999</span>
+              <span class="price-period">/month</span>
+            </div>
+            <div class="pkg-timeline">
+              <i class="fa-solid fa-bolt"></i> Continuous Sprints &bull; 48-Hr Launch
+            </div>
+          </div>
+
+          <div class="pkg-body">
+            <div class="features-category-title">Everything in Starter, plus:</div>
+            <ul class="pkg-feature-list">
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Up to 3 Campaigns</strong> (Top of funnel &amp; retargeting)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>5 Ad Creatives</strong> (Static images + video/reel concepts)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Lead Generation</strong> (Instant forms &amp; WhatsApp direct funnels)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Retargeting Setup</strong> (Re-engage past visitors &amp; warm buyers)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>A/B Testing</strong> (Headlines, copy variants &amp; audience splits)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Weekly Updates</strong> (Sprint summaries &amp; live feedback)</li>
+            </ul>
+          </div>
+
+          <div class="pkg-footer pkg-footer-actions">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20Meta%20Ads%20GROWTH%20package%20(%E2%82%B914,999/month%20-%20Diwali%20Offer)!" target="_blank" rel="noopener" class="btn btn-primary btn-full glow-btn">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Growth on WhatsApp</span>
+            </a>
+            <button class="btn btn-outline btn-full btn-sm" onclick="selectMetaPackage('Meta Ads Growth (₹14,999/mo)')">
+              <span>Book via Form</span>
+              <i class="fa-solid fa-bolt"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Meta Package 3: PREMIUM -->
+        <div class="package-card glass-card meta-card" id="meta-pkg-premium">
+          <div class="pkg-header">
+            <div class="meta-card-badge-row">
+              <span class="meta-card-medal">🥇</span>
+              <span class="pkg-tier-badge">TIER 3 &bull; FULL SCALE</span>
+            </div>
+            <h3 class="pkg-title">PREMIUM</h3>
+            <p class="pkg-desc">For serious business growth with omni-funnel strategy and VIP support.</p>
+            <div class="pkg-strikethrough-row">
+              <span class="price-strikethrough">₹40,000</span>
+              <span class="diwali-offer-tag"><i class="fa-solid fa-gift"></i> Diwali Offer</span>
+            </div>
+            <div class="pkg-price-wrap">
+              <span class="currency">₹</span>
+              <span class="price-amount">24,999</span>
+              <span class="price-period">/month</span>
+            </div>
+            <div class="pkg-timeline">
+              <i class="fa-solid fa-crown"></i> Dedicated Meta Ads Specialist
+            </div>
+          </div>
+
+          <div class="pkg-body">
+            <div class="features-category-title">Everything in Growth, plus:</div>
+            <ul class="pkg-feature-list">
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Up to 5 Campaigns</strong> (Omni-funnel strategy)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>8 Ad Creatives</strong> (High-retention video/reels &amp; carousels)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Advanced Ad Strategy</strong> (Full customer journey mapping)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Conversion Tracking Assistance</strong> (Pixel + CAPI support)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Retargeting &amp; Optimization</strong> (Dynamic catalog &amp; LAL)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Weekly Reports</strong> (Deep metrics &amp; actionable insights)</li>
+              <li class="feat-enabled"><i class="fa-solid fa-check"></i> <strong>Priority Support</strong> (Fast-response dedicated Slack/WhatsApp channel)</li>
+            </ul>
+          </div>
+
+          <div class="pkg-footer pkg-footer-actions">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20Meta%20Ads%20PREMIUM%20package%20(%E2%82%B924,999/month%20-%20Diwali%20Offer)!" target="_blank" rel="noopener" class="btn btn-wa-green btn-full">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Premium on WhatsApp</span>
+            </a>
+            <button class="btn btn-outline btn-full btn-sm" onclick="selectMetaPackage('Meta Ads Premium (₹24,999/mo)')">
+              <span>Book via Form</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta Ads Notice & DM Banner in Section -->
+      <div class="meta-section-banner" id="meta-section-banner" style="display: none;">
+        <div class="meta-notice-pill">
+          <i class="fa-solid fa-circle-info"></i>
+          <span><strong>Note:</strong> Meta advertising budget is separate from the management fee. We ensure every rupee of your ad spend is strictly optimized for high ROI.</span>
+        </div>
+        <div class="meta-dm-action-row">
+          <div class="dm-text-col">
+            <span class="dm-headline">📩 DM Us Today To Get Started With Your Business Growth!</span>
+            <span class="dm-subtext">Chat with our Growth Strategist to discover which package fits your current sales target. Let's Grow Together!</span>
+          </div>
+          <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20grow%20my%20business%20with%20Facebook%20%26%20Instagram%20Meta%20Ads!" target="_blank" rel="noopener" class="btn btn-wa-green glow-btn">
+            <i class="fa-brands fa-whatsapp"></i> <span>DM Us on WhatsApp</span>
+          </a>
         </div>
       </div>
     </div>
@@ -963,6 +1209,11 @@
         <p class="section-description">
           Most agencies only know marketing or only know coding. ProBuild bridges the gap: we build blazing fast platforms and fuel them with lethal ad funnels.
         </p>
+      </div>
+
+      <!-- 3D HIGH-PERFORMANCE ARCHITECTURE SHOWCASE BANNER -->
+      <div class="sq-tech-architecture-banner" data-aos="fade-up">
+        <img src="assets/probuild_tech_stack_showcase.jpg" alt="ProBuild High-Performance 3D Tech Architecture &amp; Growth Stack" class="sq-tech-architecture-img" loading="lazy" />
       </div>
 
       <!-- CINEMATIC ANIMATED VIDEO SHOWREEL (WHY BRANDS CHOOSE PROBUILD) -->
@@ -1553,7 +1804,13 @@
                   <i class="fa-solid fa-layer-group"></i>
                   <select id="service-required" required>
                     <option value="" disabled selected>Select a Service or Solution</option>
-                    <option value="Digital Advertising">Digital Advertising (Meta &amp; Google Ads)</option>
+                    <option value="All-In-One Starter (₹9,999)">All-In-One Starter Plan (₹9,999 • Diwali Offer)</option>
+                    <option value="All-In-One Growth (₹14,999)">All-In-One Growth Plan (₹14,999 • Most Popular)</option>
+                    <option value="All-In-One Premium (₹34,999)">All-In-One Premium Plan (₹34,999 • Full Solution)</option>
+                    <option value="Meta Ads Starter (₹7,999/mo)">Meta Ads Starter (₹7,999/month • Diwali Offer)</option>
+                    <option value="Meta Ads Growth (₹14,999/mo)">Meta Ads Growth (₹14,999/month • Most Popular)</option>
+                    <option value="Meta Ads Premium (₹24,999/mo)">Meta Ads Premium (₹24,999/month)</option>
+                    <option value="Digital Advertising">Digital Advertising (Meta &amp; Google Ads Custom)</option>
                     <option value="Website and App Development">Website &amp; App Development</option>
                     <option value="Social Media Management">Social Media Management &amp; Content</option>
                     <option value="NFC and Smart Solutions">NFC &amp; Smart Business Solutions</option>
@@ -1568,9 +1825,10 @@
                 <div class="input-with-icon">
                   <i class="fa-solid fa-indian-rupee-sign"></i>
                   <select id="client-budget">
-                    <option value="₹25,000 - ₹50,000">₹25,000 - ₹50,000 (Start-Up Launch)</option>
-                    <option value="₹50,000 - ₹1,00,000">₹50,000 - ₹1,00,000 (Growth Scaling)</option>
-                    <option value="₹1,00,000+">₹1,00,000+ (Enterprise Transformation)</option>
+                    <option value="₹7,999 - ₹10,000">₹7,999 - ₹10,000 (Meta Ads Starter / All-In-One Starter ₹9,999)</option>
+                    <option value="₹10,000 - ₹20,000">₹10,000 - ₹20,000 (Growth Plan / Meta Ads Growth)</option>
+                    <option value="₹20,000 - ₹40,000">₹20,000 - ₹40,000 (Premium All-In-One / Meta Premium)</option>
+                    <option value="₹40,000+">₹40,000+ (Custom Enterprise Platform &amp; Marketing)</option>
                   </select>
                 </div>
               </div>
@@ -1634,9 +1892,10 @@
         <div class="footer-col">
           <h4 class="footer-heading">Packages &amp; Work</h4>
           <ul class="footer-links">
-            <li><a href="#packages">Start-Up Package (₹24,999)</a></li>
-            <li><a href="#packages">Growth Engine Tier (₹49,999)</a></li>
-            <li><a href="#packages">Dominance Enterprise Tier</a></li>
+            <li><a href="#packages" onclick="switchPricingTab('main')">All-In-One Starter (₹9,999)</a></li>
+            <li><a href="#packages" onclick="switchPricingTab('main')">All-In-One Growth Plan (₹14,999)</a></li>
+            <li><a href="#packages" onclick="switchPricingTab('main')">All-In-One Premium (₹34,999)</a></li>
+            <li><a href="#packages" onclick="switchPricingTab('meta')">Meta Ads Packages (From ₹7,999/mo)</a></li>
             <li><a href="#portfolio">Recent Case Studies</a></li>
             <li><a href="#why-us">Why Choose ProBuild</a></li>
             <li><a href="#reviews">Client Testimonials</a></li>
@@ -1693,6 +1952,143 @@
     <span class="wa-tooltip">Chat with ProBuild Team</span>
   </a>
 
+  <!-- META ADS PACKAGES MODAL (SERVICES POPUP) -->
+  <div class="modal-backdrop" id="meta-ads-modal" role="dialog" aria-modal="true" aria-labelledby="meta-modal-title">
+    <div class="modal-dialog modal-wide meta-ads-modal-dialog glass-card">
+      <button class="modal-close-btn" onclick="closeMetaAdsModal()" aria-label="Close modal">&times;</button>
+      
+      <div class="meta-modal-header text-center">
+        <div class="meta-modal-badge">
+          <i class="fa-brands fa-meta"></i>
+          <span>META ADS PACKAGES</span>
+        </div>
+        <h2 class="meta-modal-title" id="meta-modal-title">
+          Grow Your Business with <span class="gradient-text">Facebook &amp; Instagram Ads!</span>
+        </h2>
+        <p class="meta-modal-subtitle">
+          Engineered for local shops, D2C brands, and service businesses ready to scale real leads, calls, and conversions.
+        </p>
+      </div>
+
+      <div class="meta-modal-grid">
+        <!-- 1. STARTER -->
+        <div class="meta-modal-card">
+          <div class="meta-card-top">
+            <span class="meta-card-medal">🥉</span>
+            <span class="meta-card-tier">STARTER</span>
+            <div class="pkg-strikethrough-row" style="margin-bottom: 0.15rem;"><span class="price-strikethrough" style="font-size: 1.05rem;">₹10,000</span> <span class="diwali-offer-tag" style="font-size: 0.62rem; padding: 0.15rem 0.5rem;"><i class="fa-solid fa-gift"></i> Diwali Offer</span></div>
+            <div class="meta-card-price"><span class="m-cur">₹</span><span class="m-val">7,999</span>
+              <span class="m-per">/month</span>
+            </div>
+            <p class="meta-card-desc">Ideal for launching initial test campaigns and acquiring high-intent local customer inquiries.</p>
+          </div>
+          <ul class="meta-card-checklist">
+            <li><i class="fa-solid fa-circle-check"></i> <strong>1 Campaign</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>2 Ad Creatives</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Audience Targeting</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Ad Copywriting</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Weekly Optimization</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Monthly Report</strong></li>
+          </ul>
+          <div class="meta-card-footer">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20Meta%20Ads%20STARTER%20package%20(%E2%82%B97,999/month)!" target="_blank" rel="noopener" class="btn btn-wa-green btn-full">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Starter Plan</span>
+            </a>
+            <button type="button" class="btn btn-outline btn-full btn-sm" onclick="selectMetaPackage('Meta Ads Starter (₹7,999/mo)')">
+              <span>Book via Form</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. GROWTH (FEATURED) -->
+        <div class="meta-modal-card featured-meta-modal-card">
+          <div class="popular-ribbon">
+            <i class="fa-solid fa-fire"></i> MOST POPULAR &bull; BEST VALUE
+          </div>
+          <div class="meta-card-top">
+            <span class="meta-card-medal">🥈</span>
+            <span class="meta-card-tier tier-growth">GROWTH</span>
+            <div class="pkg-strikethrough-row" style="margin-bottom: 0.15rem;"><span class="price-strikethrough" style="font-size: 1.05rem;">₹20,000</span> <span class="diwali-offer-tag" style="font-size: 0.62rem; padding: 0.15rem 0.5rem;"><i class="fa-solid fa-gift"></i> Diwali Offer</span></div>
+            <div class="meta-card-price"><span class="m-cur">₹</span><span class="m-val">14,999</span>
+              <span class="m-per">/month</span>
+            </div>
+            <p class="meta-card-desc">High-growth funnel setup with multiple testing angles, lead generation, and retargeting.</p>
+          </div>
+          <ul class="meta-card-checklist">
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Up to 3 Campaigns</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>5 Ad Creatives</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Lead Generation</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Retargeting Setup</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>A/B Testing</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Weekly Updates</strong></li>
+          </ul>
+          <div class="meta-card-footer">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20Meta%20Ads%20GROWTH%20package%20(%E2%82%B914,999/month)!" target="_blank" rel="noopener" class="btn btn-primary btn-full glow-btn">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Growth Plan</span>
+            </a>
+            <button type="button" class="btn btn-outline btn-full btn-sm" onclick="selectMetaPackage('Meta Ads Growth (₹14,999/mo)')">
+              <span>Book via Form</span> <i class="fa-solid fa-bolt"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. PREMIUM -->
+        <div class="meta-modal-card">
+          <div class="meta-card-top">
+            <span class="meta-card-medal">🥇</span>
+            <span class="meta-card-tier">PREMIUM</span>
+            <div class="pkg-strikethrough-row" style="margin-bottom: 0.15rem;"><span class="price-strikethrough" style="font-size: 1.05rem;">₹40,000</span> <span class="diwali-offer-tag" style="font-size: 0.62rem; padding: 0.15rem 0.5rem;"><i class="fa-solid fa-gift"></i> Diwali Offer</span></div>
+            <div class="meta-card-price"><span class="m-cur">₹</span><span class="m-val">24,999</span>
+              <span class="m-per">/month</span>
+            </div>
+            <p class="meta-card-desc">Omnichannel dominance with custom conversion assistance, full retargeting, and priority Slack/WhatsApp support.</p>
+          </div>
+          <ul class="meta-card-checklist">
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Up to 5 Campaigns</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>8 Ad Creatives</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Advanced Ad Strategy</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Conversion Tracking Assistance</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Retargeting &amp; Optimization</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Weekly Reports</strong></li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>Priority Support</strong></li>
+          </ul>
+          <div class="meta-card-footer">
+            <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20get%20started%20with%20the%20Meta%20Ads%20PREMIUM%20package%20(%E2%82%B924,999/month)!" target="_blank" rel="noopener" class="btn btn-wa-green btn-full">
+              <i class="fa-brands fa-whatsapp"></i> <span>Get Premium Plan</span>
+            </a>
+            <button type="button" class="btn btn-outline btn-full btn-sm" onclick="selectMetaPackage('Meta Ads Premium (₹24,999/mo)')">
+              <span>Book via Form</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Notice & Direct DM Banner -->
+      <div class="meta-modal-notice-banner">
+        <div class="notice-icon"><i class="fa-solid fa-circle-info"></i></div>
+        <div class="notice-content">
+          <strong>📌 Meta advertising budget is separate from the management fee.</strong>
+          <span>We ensure precise audience targeting and continuous daily budget optimization to maximize your return on ad spend.</span>
+        </div>
+      </div>
+
+      <div class="meta-modal-dm-box">
+        <div class="dm-box-left">
+          <span class="dm-box-heading"><i class="fa-solid fa-paper-plane"></i> 📩 DM Us Today To Get Started!</span>
+          <span class="dm-box-sub">Ready to launch or need help selecting the right tier? Chat directly with our Meta Ads specialist.</span>
+        </div>
+        <div class="dm-box-right">
+          <a href="https://wa.me/919021321877?text=Hi%20ProBuild,%20I%20want%20to%20grow%20my%20business%20with%20Facebook%20%26%20Instagram%20Meta%20Ads!" target="_blank" rel="noopener" class="btn btn-wa-green glow-btn">
+            <i class="fa-brands fa-whatsapp"></i> <span>Chat on WhatsApp</span>
+          </a>
+          <button type="button" class="btn btn-glass btn-sm" onclick="closeMetaAdsModal(); scrollToSection('packages');">
+            <span>Compare All Packages</span> <i class="fa-solid fa-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- CASE STUDY DETAILS MODAL -->
   <div class="modal-backdrop" id="case-study-modal">
     <div class="modal-dialog glass-card">
@@ -1703,10 +2099,21 @@
     </div>
   </div>
 
+  <!-- DYNAMIC SOCIAL PROOF TRUST POPUP (Squarespace Real-Time Activity) -->
+  <div class="social-proof-toast" id="social-proof-toast">
+    <div class="toast-avatar-box" id="sp-avatar"><i class="fa-solid fa-bolt"></i></div>
+    <div class="toast-text-box">
+      <div class="sp-client-title" id="sp-title">New Client Onboarded</div>
+      <div class="sp-client-action" id="sp-action">Dr. Rohan from Mumbai launched their Clinic Platform</div>
+      <div class="sp-client-time"><span class="sp-dot"></span> <span id="sp-time">3 mins ago</span> &bull; Verified Client</div>
+    </div>
+    <button type="button" class="sp-close-btn" id="sp-close-btn" aria-label="Dismiss notification">&times;</button>
+  </div>
+
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Main JavaScript File -->
-  <script src="script.js?v=3.3"></script>
+  <script src="script.js?v=4.3"></script>
 </body>
 </html>
