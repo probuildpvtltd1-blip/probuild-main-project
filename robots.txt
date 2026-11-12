@@ -1,0 +1,8 @@
+# robots.txt for ProBuild Digital Solutions
+# Website: https://www.probuilddigital.co
+
+User-agent: *
+Allow: /
+
+# XML Sitemap reference for Google Search Console & Search Engines
+Sitemap: https://www.probuilddigital.co/sitemap.xml
