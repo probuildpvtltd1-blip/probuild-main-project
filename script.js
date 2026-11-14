@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqAccordion();
   initBeforeAfterSlider();
   initSocialProofToast();
+  initAnalyticsTracking();
 });
 
 /* ==========================================================================
@@ -867,6 +868,19 @@ window.handleQuoteSubmit = function(event) {
     localStorage.setItem('probuild_custom_quotes', JSON.stringify(inquiries));
   } catch (err) {}
 
+  // Record verified lead event in GA4 (Strictly Non-PII)
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'generate_lead', {
+      event_category: 'Lead Generation',
+      event_label: 'Custom Project Proposal Modal',
+      lead_source: 'quotation_modal',
+      project_stage: stage,
+      timeline_target: timeline,
+      budget_range: budget,
+      services_selected: checkedServices.join(', ') || 'Custom'
+    });
+  }
+
   if (typeof showToast === 'function') {
     showToast(`🚀 Connecting directly to ProBuild WhatsApp, ${name}!`);
   }
@@ -981,6 +995,17 @@ window.handleFormSubmit = function(event) {
     localStorage.setItem('probuild_leads', JSON.stringify(leads));
   } catch (err) {
     /* ignore storage errors */
+  }
+
+  // Record verified lead event in GA4 (Strictly Non-PII)
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'generate_lead', {
+      event_category: 'Lead Generation',
+      event_label: 'Contact Strategy Proposal Form',
+      lead_source: 'contact_form',
+      service_required: service || 'General Scoping',
+      budget_range: budget || 'Not Specified'
+    });
   }
 
   showToast(`🚀 Connecting directly to ProBuild WhatsApp with your plan, ${name}!`);
@@ -1413,3 +1438,60 @@ window.switchHeroView = function(viewType, btnElement) {
     img.style.transform = 'scale(1)';
   }, 180);
 };
+
+/* ==========================================================================
+   14. GOOGLE ANALYTICS 4 (GA4) INTERACTION & EVENT TRACKING
+   ========================================================================== */
+function initAnalyticsTracking() {
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+    if (!link || typeof window.gtag !== 'function') return;
+
+    const href = (link.getAttribute('href') || '').trim();
+    if (!href) return;
+
+    // Detect triggering section / component for clean attribution
+    const section = link.closest('section')?.id ||
+                    link.closest('header')?.id ||
+                    link.closest('footer')?.className ||
+                    link.closest('.mobile-drawer')?.id ||
+                    link.closest('.modal-dialog')?.className ||
+                    'page_body';
+
+    // 1. Track WhatsApp Clicks (Zero PII)
+    if (href.includes('wa.me') || href.includes('whatsapp.com')) {
+      const buttonLabel = (link.getAttribute('aria-label') ||
+                           link.getAttribute('title') ||
+                           link.innerText ||
+                           'WhatsApp CTA').trim().replace(/\s+/g, ' ');
+
+      window.gtag('event', 'whatsapp_click', {
+        event_category: 'Direct Communication',
+        event_label: buttonLabel.slice(0, 60),
+        link_location: section
+      });
+    }
+    // 2. Track Phone Call Clicks (Zero PII)
+    else if (href.startsWith('tel:')) {
+      const targetPhone = href.replace('tel:', '').replace(/[^0-9]/g, '');
+      let contactPerson = 'Direct Line';
+      if (targetPhone.includes('9284248444')) contactPerson = 'Aditya Ubale (Founder)';
+      else if (targetPhone.includes('9021321877')) contactPerson = 'Shubham Torkad (Co-Founder)';
+      else if (targetPhone.includes('9322151641')) contactPerson = 'Aryan Date (Co-Founder)';
+
+      window.gtag('event', 'phone_click', {
+        event_category: 'Direct Communication',
+        event_label: contactPerson,
+        link_location: section
+      });
+    }
+    // 3. Track Email Clicks (Zero PII)
+    else if (href.startsWith('mailto:')) {
+      window.gtag('event', 'email_click', {
+        event_category: 'Direct Communication',
+        event_label: 'Official Agency Email',
+        link_location: section
+      });
+    }
+  }, { passive: true });
+}
