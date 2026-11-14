@@ -1476,8 +1476,8 @@ function initAnalyticsTracking() {
       const targetPhone = href.replace('tel:', '').replace(/[^0-9]/g, '');
       let contactPerson = 'Direct Line';
       if (targetPhone.includes('9284248444')) contactPerson = 'Aditya Ubale (Founder)';
-      else if (targetPhone.includes('9021321877')) contactPerson = 'Shubham Torkad (Co-Founder)';
-      else if (targetPhone.includes('9322151641')) contactPerson = 'Aryan Date (Co-Founder)';
+      else if (targetPhone.includes('9021321877')) contactPerson = 'Shubham Torkad (Founder)';
+      else if (targetPhone.includes('9322151641')) contactPerson = 'Aryan Date (Founder)';
 
       window.gtag('event', 'phone_click', {
         event_category: 'Direct Communication',
