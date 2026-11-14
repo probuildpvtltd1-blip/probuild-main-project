@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="pb-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#3867FF"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="pb-border" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3867FF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Navy Rounded Base -->
+  <rect width="512" height="512" rx="112" fill="#0B1020"/>
+  <rect x="6" y="6" width="500" height="500" rx="106" fill="none" stroke="url(#pb-border)" stroke-width="6"/>
+
+  <!-- ProBuild Stylized 'P' Mark -->
+  <!-- Outer Loop & Stem -->
+  <path d="M 136 104 L 290 104 C 362 104 402 144 402 212 C 402 280 362 320 290 320 L 218 320 L 218 408 C 218 414 213 418 207 418 L 147 418 C 141 418 136 414 136 408 Z" fill="url(#pb-gradient)"/>
+  
+  <!-- Inner Loop Cutout -->
+  <path d="M 218 178 L 282 178 C 318 178 334 194 334 212 C 334 230 318 246 282 246 L 218 246 Z" fill="#0B1020"/>
+
+  <!-- Accent Energy Node -->
+  <circle cx="177" cy="380" r="18" fill="#38BDF8"/>
+</svg>

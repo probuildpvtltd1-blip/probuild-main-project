@@ -34,10 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideoShowreel();
   init3DTilt();
   initPortfolioFilters();
-  initPricingToggle();
   initFaqAccordion();
   initBeforeAfterSlider();
-  initCostCalculator();
   initSocialProofToast();
 });
 
@@ -188,6 +186,62 @@ function initNavbar() {
   drawerLinks.forEach(link => {
     link.addEventListener('click', closeDrawer);
   });
+
+  // Mobile Drawer Services Accordion
+  const drawerServicesToggle = document.getElementById('drawer-services-toggle');
+  const drawerServicesCollapse = document.getElementById('drawer-services-collapse');
+  if (drawerServicesToggle && drawerServicesCollapse) {
+    drawerServicesToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = drawerServicesToggle.getAttribute('aria-expanded') === 'true';
+      drawerServicesToggle.setAttribute('aria-expanded', !isExpanded);
+      drawerServicesToggle.classList.toggle('active');
+      drawerServicesCollapse.classList.toggle('open');
+    });
+  }
+
+  // Close drawer on sublink click
+  const drawerSublinks = document.querySelectorAll('.drawer-sublink');
+  drawerSublinks.forEach(sublink => {
+    sublink.addEventListener('click', closeDrawer);
+  });
+
+  // Desktop Mega Menu Keyboard & Click Controller
+  const navDropdown = document.querySelector('.nav-item-dropdown');
+  const navServicesTrigger = document.getElementById('nav-services-trigger');
+  const desktopMegaMenu = document.getElementById('nav-mega-menu');
+
+  if (navDropdown && navServicesTrigger && desktopMegaMenu) {
+    navServicesTrigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        navDropdown.classList.toggle('is-open');
+        const isOpen = navDropdown.classList.contains('is-open');
+        navServicesTrigger.setAttribute('aria-expanded', isOpen);
+        if (isOpen) {
+          const firstLink = desktopMegaMenu.querySelector('.mega-menu-item');
+          if (firstLink) firstLink.focus();
+        }
+      }
+    });
+
+    navDropdown.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        navDropdown.classList.remove('is-open');
+        navServicesTrigger.setAttribute('aria-expanded', 'false');
+        navServicesTrigger.focus();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navDropdown.contains(e.target)) {
+        navDropdown.classList.remove('is-open');
+        navServicesTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
 }
 
 /* ==========================================================================
@@ -391,77 +445,7 @@ function formatINR(number) {
 }
 
 /* ==========================================================================
-   7. PRICING TOGGLE (MONTHLY RETAINER VS ONE-TIME BUILD)
-   ========================================================================== */
-window.switchPricingTab = function(mode) {
-  const metaGrid = document.getElementById('meta-packages-grid');
-  const mainGrid = document.getElementById('main-packages-grid');
-  const standardGrid = document.getElementById('standard-packages-grid');
-  const activeMainGrid = mainGrid || standardGrid;
-  const metaBanner = document.getElementById('meta-section-banner');
-  const mainBanner = document.getElementById('main-section-banner');
-  const btnMain = document.getElementById('tab-btn-main');
-  const btnMeta = document.getElementById('tab-btn-meta');
-  const btnMonthly = document.getElementById('tab-btn-monthly');
-  const btnOnetime = document.getElementById('tab-btn-onetime');
-
-  // Reset tab buttons
-  [btnMain, btnMeta, btnMonthly, btnOnetime].forEach(btn => {
-    if (btn) btn.classList.remove('active');
-  });
-
-  if (mode === 'meta') {
-    if (btnMeta) btnMeta.classList.add('active');
-    if (metaGrid) metaGrid.style.display = 'grid';
-    if (metaBanner) metaBanner.style.display = 'block';
-    if (activeMainGrid) activeMainGrid.style.display = 'none';
-    if (mainBanner) mainBanner.style.display = 'none';
-  } else {
-    // Default to All-in-One Main Business Plans
-    if (btnMain) btnMain.classList.add('active');
-    else if (btnMonthly) btnMonthly.classList.add('active');
-    if (metaGrid) metaGrid.style.display = 'none';
-    if (metaBanner) metaBanner.style.display = 'none';
-    if (activeMainGrid) activeMainGrid.style.display = 'grid';
-    if (mainBanner) mainBanner.style.display = 'block';
-  }
-};
-
-function initPricingToggle() {
-  const toggle = document.getElementById('pricing-toggle');
-  const labelMonthly = document.getElementById('label-monthly');
-  const labelOneTime = document.getElementById('label-onetime');
-  const priceElements = document.querySelectorAll('#standard-packages-grid .price-amount');
-  const periodElements = document.querySelectorAll('#standard-packages-grid .price-period');
-
-  if (toggle) {
-    function handleToggle() {
-      const isOneTime = toggle.checked;
-      if (isOneTime) {
-        window.switchPricingTab('onetime');
-      } else {
-        window.switchPricingTab('monthly');
-      }
-    }
-
-    toggle.addEventListener('change', handleToggle);
-    if (labelMonthly) {
-      labelMonthly.addEventListener('click', () => {
-        toggle.checked = false;
-        handleToggle();
-      });
-    }
-    if (labelOneTime) {
-      labelOneTime.addEventListener('click', () => {
-        toggle.checked = true;
-        handleToggle();
-      });
-    }
-  }
-}
-
-/* ==========================================================================
-   8. FAQ ACCORDION LOGIC
+   7. FAQ ACCORDION LOGIC
    ========================================================================== */
 function initFaqAccordion() {
   const faqItems = document.querySelectorAll('.faq-item');
@@ -486,65 +470,80 @@ function initFaqAccordion() {
    9. CASE STUDY MODAL DATA & CONTROLLER
    ========================================================================== */
 const caseStudiesData = {
-  'neon-streetwear': {
-    title: 'Neon Streetwear D2C E-Commerce Platform',
-    client: 'Urban Velocity Apparel (D2C Brand)',
-    image: 'assets/images/ecommerce-showcase.jpg',
-    category: 'E-Commerce Platform & High-ROAS Meta Ads',
-    overview: 'Urban Velocity was a local streetwear label with a physical storefront that wanted to scale pan-India. Their previous WordPress WooCommerce store took 4.2 seconds to load and had high checkout dropoffs.',
-    solution: 'ProBuild engineered a headless, custom Next.js e-commerce storefront with a sub-second load speed (0.6s), 1-click Razorpay UPI checkout, and automated WhatsApp abandoned cart recovery loops.',
-    metrics: [
-      { label: 'Monthly Revenue', value: '₹42,00,000+' },
-      { label: 'Blended Meta ROAS', value: '4.9x' },
-      { label: 'Page Load Speed', value: '0.6s' },
-      { label: 'Recovered Carts', value: '38.4%' }
-    ],
-    techStack: ['Next.js 15', 'Shopify Storefront API', 'Razorpay UPI', 'Meta CAPI', 'WhatsApp Cloud API']
-  },
-  'nexus-ads': {
-    title: 'Nexus Omnichannel Ads Scaling (Meta + Google)',
-    client: 'Nexus Media & Multi-Location Retail',
-    image: 'assets/images/ads-showcase.jpg',
-    category: 'Performance Marketing (Google P-Max & Meta Ads)',
-    overview: 'Nexus was spending $40,000+ monthly on ads with stagnant returns (1.8x ROAS). Ad fatigue was rampant and conversion tracking had severe gaps post-iOS14.',
-    solution: 'ProBuild rebuilt their entire tracking architecture using Server-Side Conversions API (CAPI), launched dynamic multi-angle video creatives, and structured Google Search & Performance Max campaigns with negative keyword safeguards.',
-    metrics: [
-      { label: 'Total Sales Generated', value: '$511,732' },
-      { label: 'Aggregated ROAS', value: '5.2x' },
-      { label: 'Total Conversions', value: '4,575' },
-      { label: 'Average CPA', value: '$21.50' }
-    ],
-    techStack: ['Google Ads (P-Max & Search)', 'Meta Ads Manager', 'Server CAPI', 'Google Tag Manager', 'Google Analytics 4']
-  },
-  'aether-platform': {
-    title: 'Aether Business Operations & Customer Portal',
-    client: 'Aether Analytics (B2B SaaS / Services)',
+  'lifto': {
+    title: 'Lifto — Smart Commuter Pooling Platform',
+    client: 'Lifto Mobility Technologies',
     image: 'assets/images/platform-showcase.jpg',
-    category: 'Custom Web Application & Operations Platform',
-    overview: 'Managing over 15,000 active business users through manual sheets was creating operational bottlenecks, billing errors, and customer churn.',
-    solution: 'ProBuild designed and deployed a bespoke real-time client management portal with automated subscription billing, role-based admin controls, and interactive client dashboards.',
+    category: 'Full-Stack Web App & Mobility Architecture',
+    overview: 'Daily commuters and college students in dense metropolitan hubs face unpredictable travel costs, scheduling friction, and safety verification issues. Lifto needed a verified platform to facilitate carpooling and shared commuter routes.',
+    solution: 'ProBuild engineered a full-stack responsive web application with interactive map-based route planning, user profile verification, dynamic seat reservation logic, and direct WhatsApp trip coordination.',
     metrics: [
-      { label: 'Annual ARR Managed', value: '$4.8M+' },
-      { label: 'Active Users', value: '15,400+' },
-      { label: 'Platform Uptime', value: '99.98%' },
-      { label: 'Customer Churn', value: '2.1%' }
+      { label: 'Route Lookup', value: '<0.4s' },
+      { label: 'Verified Profiles', value: '100%' },
+      { label: 'Responsive UI', value: 'Mobile-First' },
+      { label: 'Architecture', value: 'Full-Stack' }
     ],
-    techStack: ['React', 'Node.js', 'PostgreSQL', 'Stripe Billing', 'AWS Cloud Infrastructure']
+    techStack: ['React 19', 'Node.js', 'Express', 'Leaflet / Mapbox API', 'MongoDB Atlas', 'Tailwind CSS']
+  },
+  'fake-news': {
+    title: 'Fake News Detection Engine (AI & NLP Verification)',
+    client: 'AI & Data Science Research Lab',
+    image: 'assets/images/probuild_tech_stack_showcase.jpg',
+    category: 'Machine Learning & Natural Language Processing',
+    overview: 'Digital misinformation spreads rapidly across online media. Manual verification cannot scale to evaluate thousands of articles, necessitating an automated, linguistically rigorous classification model.',
+    solution: 'ProBuild engineered an end-to-end Machine Learning pipeline utilizing NLP feature extraction (TF-IDF, n-grams) and ensemble classification algorithms to evaluate linguistic veracity and detect deceptive patterns in real time.',
+    metrics: [
+      { label: 'Test Accuracy', value: '93.4%' },
+      { label: 'Inference Speed', value: '<120ms' },
+      { label: 'Precision Score', value: '92.8%' },
+      { label: 'Model Type', value: 'NLP Ensemble' }
+    ],
+    techStack: ['Python 3.11', 'Scikit-Learn', 'Flask REST API', 'NLTK / SpaCy', 'React Frontend']
+  },
+  'rero': {
+    title: 'RERO — Verified Accommodation Marketplace',
+    client: 'RERO Living (Student PropTech)',
+    image: 'assets/images/shop-ecommerce.jpg',
+    category: 'Rental Marketplace & Student Accommodation',
+    overview: 'Students relocating to educational hubs in Pune and Maharashtra face exorbitant broker commissions, fake room listings, and lack of verified property photos.',
+    solution: 'ProBuild designed and developed a hyper-local room discovery platform featuring zero brokerage fees, radius-based search filters, verified photographic listings, and direct one-click WhatsApp landlord connections.',
+    metrics: [
+      { label: 'Brokerage Fee', value: '₹0 Zero' },
+      { label: 'Verified Listings', value: '100%' },
+      { label: 'Search Radius', value: '1-10 km' },
+      { label: 'Direct Connect', value: '1-Click WA' }
+    ],
+    techStack: ['React', 'Next.js', 'Node.js', 'Cloudinary Media API', 'WhatsApp Business API']
   },
   'boutique-luxe': {
-    title: 'Boutique Luxe Fashion Shop Digital Migration',
-    client: 'Boutique Luxe (Retail Clothing Shop)',
-    image: 'assets/images/shop-ecommerce.jpg',
-    category: 'Local Shop E-Commerce & WhatsApp Commerce',
-    overview: 'A premium local boutique in a Tier-1 city wanted to tap into nationwide demand without paying high marketplace commissions (Amazon/Myntra).',
-    solution: 'ProBuild launched their complete mobile-friendly web store in just 10 days, integrated direct WhatsApp catalog browsing, and executed hyper-targeted Instagram lookalike ads.',
+    title: 'Boutique Luxe Online Storefront',
+    client: 'Boutique Luxe (Retail Fashion)',
+    image: 'assets/images/ecommerce-showcase.jpg',
+    category: 'High-Performance E-Commerce & WhatsApp Commerce',
+    overview: 'A premier retail boutique wanted to expand online pan-India without paying exorbitant commission cuts to multi-brand e-commerce marketplaces.',
+    solution: 'ProBuild launched a headless, mobile-first digital storefront with sub-second page loads, instant UPI checkout via Razorpay, dynamic catalog filters, and automated WhatsApp order confirmations.',
     metrics: [
-      { label: '1st Month Online GMV', value: '₹18,50,000' },
-      { label: 'Blended Ad ROAS', value: '5.8x' },
-      { label: 'Direct WhatsApp Orders', value: '45%' },
-      { label: 'Delivery Turnaround', value: '10 Days' }
+      { label: 'Page Load Speed', value: '0.6s' },
+      { label: 'Checkout Flow', value: '1-Tap UPI' },
+      { label: 'Payment Gateway', value: 'Razorpay' },
+      { label: 'Launch Time', value: '10 Days' }
     ],
-    techStack: ['Shopify Plus', 'Razorpay Payment Gateway', 'WhatsApp Business API', 'Instagram Ads Manager']
+    techStack: ['Next.js', 'Shopify Storefront API', 'Razorpay Gateway', 'WhatsApp Cloud API']
+  },
+  'nexus-ads': {
+    title: 'Nexus Multi-Channel Performance Scaling (Meta + Google)',
+    client: 'Nexus Media & Multi-Location Brand',
+    image: 'assets/images/ads-showcase.jpg',
+    category: 'Performance Marketing & Conversion Funnels',
+    overview: 'Stagnant returns and rising customer acquisition costs due to post-iOS14 pixel tracking dropoffs and ad creative fatigue.',
+    solution: 'ProBuild rebuilt their tracking architecture with Server-Side Conversions API (CAPI), launched high-converting multi-angle video ad campaigns, and structured high-intent Google Search and Performance Max funnels.',
+    metrics: [
+      { label: 'Blended ROAS', value: '4.6x' },
+      { label: 'CAPI Event Match', value: '92%' },
+      { label: 'Cost Per Lead', value: '-34% Lower' },
+      { label: 'Reporting', value: 'Real-Time GA4' }
+    ],
+    techStack: ['Meta Ads Manager', 'Google Ads (Search & P-Max)', 'Server CAPI', 'Google Tag Manager', 'GA4']
   }
 };
 
@@ -612,31 +611,281 @@ window.closeCaseModal = function() {
   document.body.style.overflow = '';
 };
 
-/* ==========================================================================
-   9b. META ADS PACKAGES MODAL CONTROLLER
-   ========================================================================== */
-window.openMetaAdsModal = function() {
-  const modal = document.getElementById('meta-ads-modal');
-  if (modal) {
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+window.openLegalNotice = function(type) {
+  const modal = document.getElementById('legal-modal');
+  const content = document.getElementById('legal-modal-content');
+  if (!modal || !content) return;
+
+  const notices = {
+    privacy: {
+      title: 'Privacy Policy',
+      html: `
+        <h3 id="legal-modal-title" style="margin-bottom: 0.85rem; color: #0B1020; font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-shield-halved" style="color: #3867FF;"></i> Privacy Commitment
+        </h3>
+        <p style="color: #64748B; font-size: 0.90rem; line-height: 1.6; margin-bottom: 1rem;">
+          At <strong>ProBuild Digital Solutions</strong> (Pune, Maharashtra, India), we hold client privacy, technical IP, and business data with strict institutional confidence.
+        </p>
+        <ul style="color: #334155; font-size: 0.86rem; line-height: 1.65; margin-bottom: 1.25rem; padding-left: 1.2rem;">
+          <li><strong>Confidentiality:</strong> All shared project requirements, architecture diagrams, APIs, credentials, and customer datasets are kept strictly confidential.</li>
+          <li><strong>Information Usage:</strong> Contact details (name, phone, email) submitted through our scoping forms are used exclusively to prepare customized roadmaps and quotes.</li>
+          <li><strong>Zero Third-Party Sharing:</strong> We never sell, lease, or monetize your contact information or project data to third-party data brokers or marketing lists.</li>
+        </ul>
+        <p style="color: #64748B; font-size: 0.82rem; margin: 0;">Direct inquiries: <a href="mailto:contact@probuilddigital.co" style="color: #3867FF; font-weight: 700;">contact@probuilddigital.co</a> &bull; +91 92842 48444</p>
+      `
+    },
+    terms: {
+      title: 'Terms of Service',
+      html: `
+        <h3 id="legal-modal-title" style="margin-bottom: 0.85rem; color: #0B1020; font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-file-contract" style="color: #3867FF;"></i> Terms of Service
+        </h3>
+        <p style="color: #64748B; font-size: 0.90rem; line-height: 1.6; margin-bottom: 1rem;">
+          Every digital project, custom web platform, and performance growth sprint executed by ProBuild is governed by clear, milestone-driven Service Level Agreements.
+        </p>
+        <ul style="color: #334155; font-size: 0.86rem; line-height: 1.65; margin-bottom: 1.25rem; padding-left: 1.2rem;">
+          <li><strong>Scope Alignment:</strong> Project development commences only after milestone schedules, sprint deliverables, and pricing scopes are approved in writing.</li>
+          <li><strong>Intellectual Property:</strong> Following milestone completion and settlement, all custom source code, brand assets, and creative deliverables become 100% client property.</li>
+          <li><strong>Transparency & Reporting:</strong> Active clients receive weekly progress reports, staging previews, and direct access to their assigned technical strategist.</li>
+        </ul>
+        <p style="color: #64748B; font-size: 0.82rem; margin: 0;">Official inquiries: <a href="mailto:contact@probuilddigital.co" style="color: #3867FF; font-weight: 700;">contact@probuilddigital.co</a> &bull; +91 92842 48444</p>
+      `
+    },
+    security: {
+      title: 'Security Standards',
+      html: `
+        <h3 id="legal-modal-title" style="margin-bottom: 0.85rem; color: #0B1020; font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-lock" style="color: #3867FF;"></i> Security Architecture
+        </h3>
+        <p style="color: #64748B; font-size: 0.90rem; line-height: 1.6; margin-bottom: 1rem;">
+          ProBuild engineers platforms according to modern, enterprise-grade cloud security best practices:
+        </p>
+        <ul style="color: #334155; font-size: 0.86rem; line-height: 1.65; margin-bottom: 1.25rem; padding-left: 1.2rem;">
+          <li><strong>End-to-End Encryption:</strong> Automated SSL/TLS 1.3 certificates enforced on all domains with strict HSTS policies.</li>
+          <li><strong>OWASP Hardened:</strong> Sanitized form submissions, CSRF tokens, secure headers (nosniff, SAMEORIGIN, X-XSS), and rate limiting.</li>
+          <li><strong>Compliant Gateways:</strong> Integration with verified PCI-DSS compliant payment gateways (Razorpay, Stripe) with zero plain-text card storage.</li>
+        </ul>
+        <p style="color: #64748B; font-size: 0.82rem; margin: 0;">Security team: <a href="mailto:contact@probuilddigital.co" style="color: #3867FF; font-weight: 700;">contact@probuilddigital.co</a></p>
+      `
+    }
+  };
+
+  const notice = notices[type] || notices.privacy;
+  content.innerHTML = notice.html;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
 };
 
-window.closeMetaAdsModal = function() {
-  const modal = document.getElementById('meta-ads-modal');
+window.closeLegalNotice = function() {
+  const modal = document.getElementById('legal-modal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+/* ==========================================================================
+   9b. CUSTOM QUOTATION MODAL & SERVICES FILTER CONTROLLER
+   ========================================================================== */
+window.filterServices = function(category) {
+  const tabs = document.querySelectorAll('.service-cat-tab');
+  tabs.forEach(tab => {
+    if (tab.getAttribute('data-cat') === category) {
+      tab.classList.add('active');
+    } else {
+      tab.classList.remove('active');
+    }
+  });
+
+  const cards = document.querySelectorAll('.service-card');
+  cards.forEach(card => {
+    const cat = card.getAttribute('data-service-cat');
+    if (category === 'all' || cat === category) {
+      card.style.display = 'flex';
+      card.style.animation = 'cardAppear 0.35s ease forwards';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+};
+
+window.openQuotationModal = function(preselectedService) {
+  const modal = document.getElementById('quotation-modal');
+  if (!modal) return;
+
+  // Reset to step 1
+  window.goToQuoteStep(1);
+
+  if (preselectedService) {
+    const checkboxes = modal.querySelectorAll('input[name="qservices"]');
+    checkboxes.forEach(cb => {
+      const match = cb.value.toLowerCase().includes(preselectedService.toLowerCase()) ||
+                    preselectedService.toLowerCase().includes(cb.value.toLowerCase());
+      if (match) {
+        cb.checked = true;
+        const parentCard = cb.closest('.quote-service-checkbox-card');
+        if (parentCard) parentCard.classList.add('selected');
+      }
+    });
+  }
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeQuotationModal = function() {
+  const modal = document.getElementById('quotation-modal');
   if (modal) {
     modal.classList.remove('open');
     document.body.style.overflow = '';
   }
 };
 
+// Aliases for backwards compatibility
+window.openMetaAdsModal = function() {
+  window.openQuotationModal('Digital Marketing & Growth');
+};
+window.closeMetaAdsModal = function() {
+  window.closeQuotationModal();
+};
 window.selectMetaPackage = function(packageName) {
-  window.closeMetaAdsModal();
-  window.preselectService(packageName);
-  if (typeof showToast === 'function') {
-    showToast(`Selected ${packageName}! Fill in your details below.`);
+  window.closeQuotationModal();
+  window.openQuotationModal(packageName);
+};
+window.selectPackage = function(packageName) {
+  window.openQuotationModal(packageName);
+};
+window.openProposalModal = function(service) {
+  window.openQuotationModal(service);
+};
+
+window.goToQuoteStep = function(stepNum) {
+  for (let i = 1; i <= 4; i++) {
+    const tab = document.getElementById(`qstep-tab-${i}`);
+    const view = document.getElementById(`quote-step-${i}`);
+    if (tab) {
+      if (i < stepNum) {
+        tab.classList.add('completed');
+        tab.classList.remove('active');
+      } else if (i === stepNum) {
+        tab.classList.add('active');
+        tab.classList.remove('completed');
+      } else {
+        tab.classList.remove('active', 'completed');
+      }
+    }
+    if (view) {
+      if (i === stepNum) {
+        view.classList.add('active');
+      } else {
+        view.classList.remove('active');
+      }
+    }
   }
+
+  if (stepNum === 4) {
+    updateQuoteReviewCard();
+  }
+};
+
+window.toggleServiceOption = function(cardEl) {
+  const cb = cardEl.querySelector('input[type="checkbox"]');
+  if (cb) {
+    setTimeout(() => {
+      if (cb.checked) {
+        cardEl.classList.add('selected');
+      } else {
+        cardEl.classList.remove('selected');
+      }
+    }, 10);
+  }
+};
+
+function updateQuoteReviewCard() {
+  const checkedServices = [];
+  document.querySelectorAll('input[name="qservices"]:checked').forEach(cb => {
+    checkedServices.push(cb.value);
+  });
+  const selectedStage = document.querySelector('input[name="qstage"]:checked');
+  const selectedTimeline = document.querySelector('input[name="qtimeline"]:checked');
+  const selectedBudget = document.querySelector('input[name="qbudget"]:checked');
+
+  const sReview = document.getElementById('qreview-services');
+  const stageReview = document.getElementById('qreview-stage');
+  const tbReview = document.getElementById('qreview-timeline-budget');
+
+  if (sReview) {
+    sReview.textContent = checkedServices.length > 0 ? checkedServices.join(', ') : 'Custom Scope';
+  }
+  if (stageReview && selectedStage) {
+    stageReview.textContent = selectedStage.value;
+  }
+  if (tbReview && selectedTimeline && selectedBudget) {
+    tbReview.textContent = `${selectedTimeline.value} • ${selectedBudget.value}`;
+  }
+}
+
+window.handleQuoteSubmit = function(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('q-name').value.trim();
+  const phone = document.getElementById('q-phone').value.trim();
+  const email = document.getElementById('q-email').value.trim();
+  const notes = document.getElementById('q-notes').value.trim();
+
+  const checkedServices = [];
+  document.querySelectorAll('input[name="qservices"]:checked').forEach(cb => {
+    checkedServices.push(cb.value);
+  });
+  const stage = document.querySelector('input[name="qstage"]:checked')?.value || 'Custom Scope';
+  const timeline = document.querySelector('input[name="qtimeline"]:checked')?.value || 'Flexible';
+  const budget = document.querySelector('input[name="qbudget"]:checked')?.value || 'Milestone Based';
+
+  const submitBtn = document.getElementById('q-submit-btn');
+  const originalHtml = submitBtn.innerHTML;
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<i class="fa-brands fa-whatsapp fa-bounce"></i> Opening WhatsApp...`;
+
+  const waLines = [
+    `*⚡ CUSTOM PROJECT INQUIRY — PROBUILD DIGITAL*`,
+    ``,
+    `👤 *Client / Brand:* ${name}`,
+    `📞 *Phone / WhatsApp:* ${phone}`,
+    `📧 *Email:* ${email}`,
+    `🛠️ *Capabilities:* ${checkedServices.join(', ') || 'Custom'}`,
+    `📌 *Stage:* ${stage}`,
+    `⏱️ *Target Timeline:* ${timeline}`,
+    `💰 *Budget Scope:* ${budget}`,
+    `📝 *Brief Notes:* ${notes || 'N/A'}`
+  ];
+
+  const encodedMsg = encodeURIComponent(waLines.join('\n'));
+  const waUrl = `https://wa.me/919284248444?text=${encodedMsg}`;
+
+  try {
+    const inquiries = JSON.parse(localStorage.getItem('probuild_custom_quotes') || '[]');
+    inquiries.push({ name, phone, email, services: checkedServices, stage, timeline, budget, notes, time: new Date().toLocaleString() });
+    localStorage.setItem('probuild_custom_quotes', JSON.stringify(inquiries));
+  } catch (err) {}
+
+  if (typeof showToast === 'function') {
+    showToast(`🚀 Connecting directly to ProBuild WhatsApp, ${name}!`);
+  }
+
+  setTimeout(() => {
+    const newTab = window.open(waUrl, '_blank');
+    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+      window.location.href = waUrl;
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `<i class="fa-solid fa-check"></i> Redirected to WhatsApp!`;
+
+    setTimeout(() => {
+      submitBtn.innerHTML = originalHtml;
+      window.closeQuotationModal();
+      document.getElementById('modal-quotation-form').reset();
+    }, 2500);
+  }, 400);
 };
 
 window.scrollToSection = function(sectionId) {
@@ -652,9 +901,13 @@ document.addEventListener('click', (e) => {
   if (caseModal && e.target === caseModal) {
     window.closeCaseModal();
   }
-  const metaModal = document.getElementById('meta-ads-modal');
-  if (metaModal && e.target === metaModal) {
-    window.closeMetaAdsModal();
+  const quoteModal = document.getElementById('quotation-modal');
+  if (quoteModal && e.target === quoteModal) {
+    window.closeQuotationModal();
+  }
+  const legalModal = document.getElementById('legal-modal');
+  if (legalModal && e.target === legalModal) {
+    window.closeLegalNotice();
   }
 });
 
@@ -662,7 +915,8 @@ document.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     window.closeCaseModal();
-    window.closeMetaAdsModal();
+    window.closeQuotationModal();
+    window.closeLegalNotice();
   }
 });
 
@@ -681,24 +935,9 @@ window.preselectService = function(serviceName) {
     }
   }
 
-  // Smooth scroll to contact
   const contactSec = document.getElementById('contact');
   if (contactSec) {
     contactSec.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-
-window.selectPackage = function(packageName) {
-  window.preselectService(packageName);
-  showToast(`Selected ${packageName}! Let's customize your growth plan below.`);
-};
-
-window.openProposalModal = function() {
-  const contactSec = document.getElementById('contact');
-  if (contactSec) {
-    contactSec.scrollIntoView({ behavior: 'smooth' });
-    const nameInput = document.getElementById('client-name');
-    if (nameInput) nameInput.focus();
   }
 };
 
@@ -733,7 +972,7 @@ window.handleFormSubmit = function(event) {
     `📝 *Business Details:* ${message || 'N/A'}`
   ];
   const encodedMsg = encodeURIComponent(waLines.join('\n'));
-  const waUrl = `https://wa.me/919021321877?text=${encodedMsg}`;
+  const waUrl = `https://wa.me/919284248444?text=${encodedMsg}`;
 
   // Save safety backup copy in browser localStorage
   try {
@@ -1066,296 +1305,7 @@ function initBeforeAfterSlider() {
 }
 
 /* ==========================================================================
-   12. INTERACTIVE PROJECT COST & ROI CALCULATOR
-   ========================================================================== */
-function initCostCalculator() {
-  const servicePills = document.querySelectorAll('.calc-pill');
-  const slider = document.getElementById('calc-tier-slider');
-  const addonSeo = document.getElementById('addon-seo');
-  const addonWa = document.getElementById('addon-wa');
-  const ticks = document.querySelectorAll('.calc-ticks .tick-step');
-
-  const priceDisplay = document.getElementById('calc-price-display');
-  const periodDisplay = document.getElementById('calc-period-display');
-  const planSummary = document.getElementById('calc-plan-summary');
-  const tierActivePill = document.getElementById('calc-tier-active-pill');
-  const timelineDisplay = document.getElementById('calc-timeline-display');
-  const roiDisplay = document.getElementById('calc-roi-display');
-  const deliverablesList = document.getElementById('calc-deliverables-list');
-  const waBtn = document.getElementById('calc-wa-cta-btn');
-
-  if (!priceDisplay || !slider) return;
-
-  // Pricing matrix
-  const calcData = {
-    web: {
-      name: 'Custom Web & App Development',
-      period: '/one-time',
-      tiers: [
-        {
-          label: 'STARTER TIER',
-          name: 'High-Speed Landing Page',
-          basePrice: 7499,
-          timeline: '3 - 5 Days',
-          roi: '+220% Leads',
-          deliverables: [
-            'Mobile-first responsive build (0.8s load time)',
-            'Conversion lead forms with WhatsApp alert',
-            'Razorpay, UPI & Payment gateway integration',
-            'Basic Search Engine Optimization setup'
-          ]
-        },
-        {
-          label: 'GROWTH TIER (POPULAR)',
-          name: 'Full Business Store / Web App',
-          basePrice: 14999,
-          timeline: '7 - 10 Days',
-          roi: '+340% Conversions',
-          deliverables: [
-            'Up to 10 Custom pages & full product catalog',
-            'Mobile-first checkout & WhatsApp direct order',
-            'Admin dashboard for real-time inventory management',
-            'Advanced conversion tracking & analytics sync'
-          ]
-        },
-        {
-          label: 'DOMINANCE TIER',
-          name: 'Custom Platform & SaaS App',
-          basePrice: 24999,
-          timeline: '14 - 18 Days',
-          roi: '+580% Sales Growth',
-          deliverables: [
-            'Headless React/Next.js architecture with instant CDN',
-            'Multi-tier customer login & secure order portals',
-            'Automated email, SMS & WhatsApp workflow engine',
-            '60 Days Dedicated post-launch warranty & maintenance'
-          ]
-        }
-      ]
-    },
-    ads: {
-      name: 'Meta & Google Ads Engine',
-      period: '/month',
-      tiers: [
-        {
-          label: 'STARTER TIER',
-          name: 'Meta Ads Starter',
-          basePrice: 7999,
-          timeline: '3 Days Setup',
-          roi: '+3.2x ROAS',
-          deliverables: [
-            '1 High-intent Facebook & Instagram campaign',
-            '2 Custom high-CTR ad creatives & copy',
-            'Audience interest & demographic geo-targeting',
-            'Weekly bid optimization & monthly transparent report'
-          ]
-        },
-        {
-          label: 'GROWTH TIER (POPULAR)',
-          name: 'Meta Ads Growth Engine',
-          basePrice: 14999,
-          timeline: '2 Days Setup',
-          roi: '+4.8x ROAS',
-          deliverables: [
-            'Up to 3 Campaigns (Awareness, Lead Gen & Retargeting)',
-            '5 Custom video/carousel ad creatives designed to convert',
-            'Dynamic product retargeting & lookalike audience funnels',
-            'A/B split testing & weekly metric progress calls'
-          ]
-        },
-        {
-          label: 'DOMINANCE TIER',
-          name: 'Meta Ads Dominance Scale',
-          basePrice: 24999,
-          timeline: '24h Priority Setup',
-          roi: '+6.5x ROAS',
-          deliverables: [
-            'Up to 5 Omni-funnel campaigns for aggressive scaling',
-            '8 High-retention video reels & graphic creatives',
-            'Server-side Meta Conversion API (CAPI) pixel setup',
-            'Priority 24/7 Slack/WhatsApp dedicated strategist channel'
-          ]
-        }
-      ]
-    },
-    nfc: {
-      name: 'Smart NFC Business Solutions',
-      period: '/one-time',
-      tiers: [
-        {
-          label: 'STARTER TIER',
-          name: 'Smart NFC Executive Card',
-          basePrice: 1499,
-          timeline: '2 - 3 Days Dispatch',
-          roi: '100% Contact Retention',
-          deliverables: [
-            '1 Premium matte black smart NFC contact card',
-            'Instant 1-tap contact save to iPhone & Android',
-            'Social links, WhatsApp, phone & catalog routing',
-            'Zero app installation required & lifetime QR fallback'
-          ]
-        },
-        {
-          label: 'GROWTH TIER (POPULAR)',
-          name: 'Google Review NFC Standee Pack (3 Standees)',
-          basePrice: 3999,
-          timeline: '3 - 4 Days Dispatch',
-          roi: '5x Google Reviews',
-          deliverables: [
-            '3 Commercial acrylic NFC tap standees for physical counters',
-            'Direct 1-tap 5-star Google review redirect',
-            'Dynamic link update dashboard with real-time analytics',
-            'Weatherproof UV-coated finish with counter branding'
-          ]
-        },
-        {
-          label: 'DOMINANCE TIER',
-          name: 'Corporate Fleet (10 Custom Smart Cards)',
-          basePrice: 9999,
-          timeline: '5 - 7 Days Dispatch',
-          roi: 'Team Enterprise Fleet',
-          deliverables: [
-            '10 Laser-engraved customized metal or matte NFC cards',
-            'Centralized team management dashboard with role controls',
-            'Real-time tap analytics and lead capture logging',
-            'Custom branded landing URL on your company domain'
-          ]
-        }
-      ]
-    },
-    college: {
-      name: 'College Projects & Academic Kits',
-      period: '/one-time',
-      tiers: [
-        {
-          label: 'STARTER TIER',
-          name: 'Mini Project Complete Kit',
-          basePrice: 3499,
-          timeline: '2 Days Delivery',
-          roi: 'A+ Grade Guarantee',
-          deliverables: [
-            '100% Working frontend + backend source code',
-            'Complete local setup & step-by-step execution guide',
-            'Database schema, ER diagrams & system architecture',
-            'Basic viva defence questions & cheat sheet'
-          ]
-        },
-        {
-          label: 'GROWTH TIER (POPULAR)',
-          name: 'Major IEEE Project + Paper Ready',
-          basePrice: 6999,
-          timeline: '4 Days Delivery',
-          roi: 'University A+ Approved',
-          deliverables: [
-            'Full IEEE/CS Major project with custom modifications',
-            'Complete 80+ page project report (Word + PDF formatted)',
-            'Professional PPT presentation with data flow diagrams',
-            '1-on-1 Live Google Meet code walkthrough demo'
-          ]
-        },
-        {
-          label: 'DOMINANCE TIER',
-          name: 'AI/ML Deep Tech Capstone Project',
-          basePrice: 11999,
-          timeline: '5 Days Delivery',
-          roi: 'Research Defence Ready',
-          deliverables: [
-            'Cutting-edge AI / Deep Learning model training & API',
-            'IEEE research paper format ready for journal publication',
-            'Live viva mock rehearsal coaching with our senior engineers',
-            'Unlimited code revisions until university viva approval'
-          ]
-        }
-      ]
-    }
-  };
-
-  let activeService = 'web';
-  let activeTierIndex = 1; // 0: Starter, 1: Growth, 2: Dominance
-
-  function updateCalculator() {
-    const serviceInfo = calcData[activeService] || calcData.web;
-    const tierInfo = serviceInfo.tiers[activeTierIndex] || serviceInfo.tiers[1];
-
-    let total = tierInfo.basePrice;
-    const addOnList = [];
-
-    if (addonSeo && addonSeo.checked) {
-      total += 2499;
-      addOnList.push('Speed & SEO Optimization (+₹2,499)');
-    }
-    if (addonWa && addonWa.checked) {
-      total += 1999;
-      addOnList.push('WhatsApp CRM Auto-Bot (+₹1,999)');
-    }
-
-    // Update UI elements
-    priceDisplay.textContent = total.toLocaleString('en-IN');
-    periodDisplay.textContent = serviceInfo.period;
-    planSummary.innerHTML = `<strong>${serviceInfo.name}</strong> &bull; ${tierInfo.name}`;
-    tierActivePill.textContent = tierInfo.label;
-    timelineDisplay.textContent = tierInfo.timeline;
-    roiDisplay.textContent = tierInfo.roi;
-
-    // Update ticks
-    ticks.forEach((tick, i) => {
-      tick.classList.toggle('active', i === activeTierIndex);
-    });
-
-    // Update deliverables list
-    deliverablesList.innerHTML = '';
-    tierInfo.deliverables.forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${item}</span>`;
-      deliverablesList.appendChild(li);
-    });
-
-    addOnList.forEach(addOn => {
-      const li = document.createElement('li');
-      li.innerHTML = `<i class="fa-solid fa-plus text-emerald"></i> <span class="text-emerald"><strong>Add-on:</strong> ${addOn}</span>`;
-      deliverablesList.appendChild(li);
-    });
-
-    // Update WhatsApp CTA URL
-    const msg = encodeURIComponent(
-      `Hi ProBuild, I used your Interactive Calculator!\n` +
-      `📌 Service: ${serviceInfo.name}\n` +
-      `📦 Package: ${tierInfo.name} (${tierInfo.label})\n` +
-      `💰 Estimated Total: ₹${total.toLocaleString('en-IN')}${serviceInfo.period}\n` +
-      `⚡ Timeline: ${tierInfo.timeline}\n` +
-      `Can we get started?`
-    );
-    if (waBtn) {
-      waBtn.href = `https://wa.me/919021321877?text=${msg}`;
-    }
-  }
-
-  // Service pill click
-  servicePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      servicePills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      activeService = pill.dataset.service;
-      updateCalculator();
-    });
-  });
-
-  // Slider change
-  slider.addEventListener('input', (e) => {
-    activeTierIndex = parseInt(e.target.value) - 1;
-    updateCalculator();
-  });
-
-  // Addons change
-  if (addonSeo) addonSeo.addEventListener('change', updateCalculator);
-  if (addonWa) addonWa.addEventListener('change', updateCalculator);
-
-  // Initial calculation
-  updateCalculator();
-}
-
-/* ==========================================================================
-   13. DYNAMIC SOCIAL PROOF TRUST NOTIFICATION TOASTS
+   11. DYNAMIC SOCIAL PROOF TRUST NOTIFICATION TOASTS
    ========================================================================== */
 function initSocialProofToast() {
   const toast = document.getElementById('social-proof-toast');
@@ -1370,32 +1320,32 @@ function initSocialProofToast() {
   const proofEvents = [
     {
       title: 'New Client Onboarded',
-      action: 'Dr. Rohan from Mumbai launched their Clinic Platform',
-      time: '3 mins ago',
+      action: 'Lifto Commuter Platform development milestone completed',
+      time: '4 mins ago',
       icon: 'fa-solid fa-laptop-code'
     },
     {
-      title: 'Meta Ads ROAS Jump',
-      action: 'Urban Luxe achieved 4.9x ROAS with ₹42L revenue',
-      time: '9 mins ago',
+      title: 'Performance Marketing',
+      action: 'Server-side CAPI event tracking deployed for client brand',
+      time: '12 mins ago',
       icon: 'fa-brands fa-meta'
     },
     {
-      title: 'NFC Dispatch',
-      action: '15 Smart NFC Executive Cards shipped to Bangalore',
-      time: '18 mins ago',
+      title: 'Smart Solution',
+      action: 'Contactless Executive NFC Cards dispatched to client team',
+      time: '24 mins ago',
       icon: 'fa-solid fa-wifi'
     },
     {
-      title: 'Project Delivered',
-      action: 'Final Year IEEE AI Project delivered to MIT Pune',
-      time: '24 mins ago',
-      icon: 'fa-solid fa-graduation-cap'
+      title: 'Engineering Milestone',
+      action: 'AI & NLP Fake News Detection API successfully benchmarked',
+      time: '36 mins ago',
+      icon: 'fa-solid fa-brain'
     },
     {
-      title: 'Audit Requested',
-      action: 'Aditya from Delhi requested a Custom Web App audit',
-      time: '38 mins ago',
+      title: 'Discovery Call Booked',
+      action: 'Custom Next.js Web Application scope consultation confirmed',
+      time: '48 mins ago',
       icon: 'fa-solid fa-bolt'
     }
   ];
@@ -1451,11 +1401,11 @@ window.switchHeroView = function(viewType, btnElement) {
 
   setTimeout(() => {
     if (viewType === 'architecture') {
-      img.src = 'assets/probuild_tech_stack_showcase.jpg';
+      img.src = 'assets/images/probuild_tech_stack_showcase.jpg';
       img.alt = 'ProBuild High-Performance 3D Tech Stack & Architecture';
       if (badgeText) badgeText.innerText = 'HIGH-PERFORMANCE 3D ARCHITECTURE • +128% SPEED';
     } else {
-      img.src = 'assets/probuild_macbook_hero.png';
+      img.src = 'assets/images/probuild_macbook_hero.png';
       img.alt = 'ProBuild Digital Solutions Platform on MacBook Pro';
       if (badgeText) badgeText.innerText = 'PROBUILD DIGITAL SOLUTIONS • LIVE PRODUCTION';
     }
